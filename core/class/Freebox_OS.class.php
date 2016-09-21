@@ -136,9 +136,12 @@ class Freebox_OS extends eqLogic {
 	        curl_close($ch);
 	        $result=json_decode($content, true);
 		log::add('Freebox_OS','debug', $content);
-		if(isset($result['result']["error_code"]))
-			if($result['result']["error_code"]=="auth_required")
-				self::deamon_stop();
+		if(!isset($result['success'])){
+			if(isset($result["error_code"])){
+				if($result["error_code"]=="auth_required")
+					self::deamon_stop();
+			}
+		}
 		return $result;	
     	}
 	public function close_session(){
