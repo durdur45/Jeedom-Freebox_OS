@@ -2,6 +2,7 @@
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class Freebox_OS extends eqLogic {
+	static $first_start;
 	public static function deamon_info() {
 		$return = array();
 		$return['log'] = 'Freebox_OS';		
@@ -12,8 +13,7 @@ class Freebox_OS extends eqLogic {
 		$cache = cache::byKey('Freebox_OS::SessionToken');
 		$cron = cron::byClassAndFunction('Freebox_OS', 'RefreshInformation');
 		//if(config::byKey('FREEBOX_SERVER_SESSION_TOKEN','Freebox_OS')!='')
-		//if(is_object($cron) && $cron->getState()=="run" && is_object($cache) && $cache->getValue('')!='')
-		if(is_object($cron) && $cron->running()&& is_object($cache) && $cache->getValue('')!='')
+		if(is_object($cron) && $cron->getState()=="run" && is_object($cache) && $cache->getValue('')!='')
 			$return['state'] = 'ok';
 		else 
 			$return['state'] = 'nok';
@@ -50,6 +50,9 @@ class Freebox_OS extends eqLogic {
 		}
 		self::close_session();
 	}
+	public static function get_first_start() {
+		return self::$first_start;
+	}
 	public function track_id() 	{
 		$serveur		=trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
 		$app_id 		=trim(config::byKey('FREEBOX_SERVER_APP_ID','Freebox_OS'));
@@ -84,6 +87,7 @@ class Freebox_OS extends eqLogic {
 	        return $result;
 	}
 	public function open_session(){
+		log::add('Freebox_OS','debug', 'opening session');
 		$serveur=trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
 		$app_token=config::byKey('FREEBOX_SERVER_APP_TOKEN','Freebox_OS');
 		$app_id =trim(config::byKey('FREEBOX_SERVER_APP_ID','Freebox_OS'));
@@ -108,7 +112,7 @@ class Freebox_OS extends eqLogic {
 			cache::set('Freebox_OS::SessionToken', $json_connect['result']['session_token'], 0);
 			//config::save('FREEBOX_SERVER_SESSION_TOKEN', $json_connect['result']['session_token'],'Freebox_OS');
 		}
-		else
+		else 
 			return false;
 		return true;
 	}
@@ -138,20 +142,26 @@ class Freebox_OS extends eqLogic {
 	        $result=json_decode($content, true);
 		log::add('Freebox_OS','debug', $content);
 		if(!$result['success']){
+			log::add('Freebox_OS','debug','success KO');
 			if(isset($result["error_code"])){
-				if($result["error_code"]=="auth_required")
+				log::add('Freebox_OS','debug','error_code exists');
+				if($result["error_code"]=="auth_required") {
+					log::add('Freebox_OS','debug','auth_required');
 					self::deamon_stop();
+					log::add('Freebox_OS','debug','deamon stoped');
+				}
 			}
 		}
 		return $result;	
-    	}
+    }
 	public function close_session(){
+		log::add('Freebox_OS','debug', 'closing session');
 		$serveur=trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
 		$http = new com_http($serveur . '/api/v3/login/logout/');
 		$http->setPost(array());
 		$json_close=$http->exec(2,2);
-		$cache = cache::byKey('Freebox_OS::SessionToken');
-		$cache->remove();
+		//$cache = cache::byKey('Freebox_OS::SessionToken');
+		//$cache->remove();
 		//config::save('FREEBOX_SERVER_SESSION_TOKEN','','Freebox_OS');
 		return $json_close;
 	}
@@ -664,7 +674,9 @@ class Freebox_OS extends eqLogic {
 			$this->setLogicalId('FreeboxTv');
 	}
 	public static function RefreshInformation() {
+		self::$first_start = 1;
 		while(true){
+			self::open_session();
 			foreach(eqLogic::byType('Freebox_OS') as $Equipement){
 				if($Equipement->getIsEnable()){
 					foreach($Equipement->getCmd('info') as $Commande){
@@ -672,7 +684,9 @@ class Freebox_OS extends eqLogic {
 					}
 				}
 			}
+			self::close_session();
 			sleep(config::byKey('DemonSleep','Freebox_OS'));
+			self::$first_start = 0;
 		}
 	}
 	public static function dependancy_info() {
@@ -899,10 +913,14 @@ class Freebox_OSCmd extends cmd {
 					}
 					$this->setConfiguration('host_type',$result['host_type']);
 					$this->save();
-					if (isset($result['active']))
-						$return=$result['active'];
-					else
+					if (isset($result['active'])) {
+						if ($result['active'] == 'true')
+							$return=1;
+						else
+							$return=0;
+					} else {
 						$return=false;
+					}
 				}
 			break;
 			case'FreeboxTv':
@@ -932,10 +950,14 @@ class Freebox_OSCmd extends cmd {
 				}
 			break;
 		}		
-		if(isset($return)&&$this->execCmd() !=$return){
+		if ( (isset($return) && $this->execCmd() != $return) || (isset($return) && $this->getEqLogic()->get_first_start())){
+			log::add('Freebox_OS','debug','1');
 			$this->setCollectDate('');
+			log::add('Freebox_OS','debug','2');
 			$this->event($return);
+			log::add('Freebox_OS','debug','3');
 			$this->getEqLogic()->refreshWidget();
+			log::add('Freebox_OS','debug','4');
 			return $return;
 		}
 	}
