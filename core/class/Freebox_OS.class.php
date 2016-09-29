@@ -2,7 +2,7 @@
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class Freebox_OS extends eqLogic {
-	static $first_start;
+	public static $first_start;
 	public static function deamon_info() {
 		$return = array();
 		$return['log'] = 'Freebox_OS';		
