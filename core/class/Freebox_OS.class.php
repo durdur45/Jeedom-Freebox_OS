@@ -944,14 +944,10 @@ class Freebox_OSCmd extends cmd {
 				}
 			break;
 		}		
-		if ( (isset($return) && $this->execCmd() != $return) || (isset($return) && $this->getEqLogic()->get_first_start())){
-			log::add('Freebox_OS','debug','1');
+		if ( (isset($return) && $this->execCmd() != $return) || (isset($return))){
 			$this->setCollectDate('');
-			log::add('Freebox_OS','debug','2');
 			$this->event($return);
-			log::add('Freebox_OS','debug','3');
 			$this->getEqLogic()->refreshWidget();
-			log::add('Freebox_OS','debug','4');
 			return $return;
 		}
 	}
