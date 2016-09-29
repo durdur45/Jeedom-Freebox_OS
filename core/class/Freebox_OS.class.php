@@ -2,7 +2,6 @@
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class Freebox_OS extends eqLogic {
-	public static $first_start;
 	public static function deamon_info() {
 		$return = array();
 		$return['log'] = 'Freebox_OS';		
@@ -49,9 +48,6 @@ class Freebox_OS extends eqLogic {
 			$cron->remove();
 		}
 		self::close_session();
-	}
-	public static function get_first_start() {
-		return self::$first_start;
 	}
 	public function track_id() 	{
 		$serveur		=trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
@@ -674,7 +670,6 @@ class Freebox_OS extends eqLogic {
 			$this->setLogicalId('FreeboxTv');
 	}
 	public static function RefreshInformation() {
-		self::$first_start = 1;
 		while(true){
 			self::open_session();
 			foreach(eqLogic::byType('Freebox_OS') as $Equipement){
@@ -686,7 +681,6 @@ class Freebox_OS extends eqLogic {
 			}
 			self::close_session();
 			sleep(config::byKey('DemonSleep','Freebox_OS'));
-			self::$first_start = 0;
 		}
 	}
 	public static function dependancy_info() {
