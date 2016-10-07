@@ -224,8 +224,8 @@ class Freebox_OS extends eqLogic {
 					else {	
 						$Disque=self::AddEqLogic('Disque Dur','Disque');
 						$commande=self::AddCommande($Disque,'Occupation ['.$reponse['result'][$countDD]['type'].'] - '.$reponse['result'][$countDD]['id'],$reponse['result'][$countDD]['id'],"info",'numeric','Freebox_OS_Disque','%');
+						$commande->setCollectDate(date('Y-m-d H:i:s'));
 						$commande->setConfiguration('doNotRepeatEvent', 1);
-						$Commande->setCollectDate('');
 						$commande->event($value);
 					}
 					$countDD++;
@@ -343,7 +343,8 @@ class Freebox_OS extends eqLogic {
 							}
 						}
 						if($Commande->execCmd() != $Equipement['active']){
-							$Commande->setCollectDate('');
+							$commande->setCollectDate(date('Y-m-d H:i:s'));
+							$commande->setConfiguration('doNotRepeatEvent', 1);
 							$Commande->event($Equipement['active']);
 						}
 						$Commande->save();	
@@ -947,8 +948,8 @@ class Freebox_OSCmd extends cmd {
 			break;
 		}		
 		if ( (isset($return) && $this->execCmd() != $return) || (isset($return))){
-			$this->setCollectDate('');
-			$this->setConfiguration('doNotRepeatEvent', 1);
+			$commande->setCollectDate(date('Y-m-d H:i:s'));
+			$commande->setConfiguration('doNotRepeatEvent', 1);
 			$this->event($return);
 			$this->getEqLogic()->refreshWidget();
 			return $return;
