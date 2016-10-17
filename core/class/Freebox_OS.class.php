@@ -209,11 +209,11 @@ class Freebox_OS extends eqLogic {
 	public function disques($logicalId=''){
 			$reponse = self::fetch('/api/v3/storage/disk/');
 			if($reponse['success']){
-				$return=0;
+				$value=0;
 				foreach($reponse['result'] as $Disques){
 					$total_bytes=$Disques['partitions'][0]['total_bytes'];
 					$used_bytes=$Disques['partitions'][0]['used_bytes'];
-					log::add('Freebox_OS','debug',$used_bytes.'/'.$total_bytes)
+					log::add('Freebox_OS','debug',$used_bytes.'/'.$total_bytes);
 					$value=round($used_bytes/$total_bytes*100);
 					if($Disques['id']!=$logicalId){	
 						$Disque=self::AddEqLogic('Disque Dur','Disque');
