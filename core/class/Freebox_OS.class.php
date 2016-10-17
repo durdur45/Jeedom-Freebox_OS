@@ -208,31 +208,23 @@ class Freebox_OS extends eqLogic {
 	}
 	public function disques($logicalId=''){
 			$reponse = self::fetch('/api/v3/storage/disk/');
-			
 			if($reponse['success']){
-				$nbDD=count($reponse['result']);
-				$countDD=0;
 				$return=0;
-				while($countDD < $nbDD)
-				{
-					$total_bytes=$reponse['result'][$countDD]['partitions'][0]['total_bytes'];
-					$used_bytes=$reponse['result'][$countDD]['partitions'][0]['used_bytes'];
+				foreach($reponse['result'] as $Disques){
+					$total_bytes=$Disques['partitions'][0]['total_bytes'];
+					$used_bytes=$Disques['partitions'][0]['used_bytes'];
+					log::add('Freebox_OS','debug',$used_bytes.'/'.$total_bytes)
 					$value=round($used_bytes/$total_bytes*100);
-					if($reponse['result'][$countDD]['id']==$logicalId){
-						$return=$value;
-					}
-					else {	
+					if($Disques['id']!=$logicalId){	
 						$Disque=self::AddEqLogic('Disque Dur','Disque');
-						$commande=self::AddCommande($Disque,'Occupation ['.$reponse['result'][$countDD]['type'].'] - '.$reponse['result'][$countDD]['id'],$reponse['result'][$countDD]['id'],"info",'numeric','Freebox_OS_Disque','%');
+						$commande=self::AddCommande($Disque,'Occupation ['.$Disques['type'].'] - '.$Disques['id'],$Disques['id'],"info",'numeric','Freebox_OS_Disque','%');
 						$commande->setCollectDate(date('Y-m-d H:i:s'));
 						$commande->setConfiguration('doNotRepeatEvent', 1);
 						$commande->event($value);
 					}
-					$countDD++;
 				}
-			return $return;
-			}
-			else
+				return $value;
+			}else
 				return false;
 	}
 	public function wifi(){
