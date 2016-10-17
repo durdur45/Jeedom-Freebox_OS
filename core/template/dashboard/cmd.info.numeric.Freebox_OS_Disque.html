@@ -6,7 +6,7 @@
         </div>
     </div>
     <script>
-        var value = (is_numeric('#state#')) ? parseInt('#state#') : 0;
+        var value = parseInt('#state#');
         $('.cmd[data-cmd_id=#id#]').find('.progress-bar').attr('aria-valuenow', value);
         var pourcentage = value;
         $('.cmd[data-cmd_id=#id#]').find('.progress-bar').css('width', pourcentage + '%');
