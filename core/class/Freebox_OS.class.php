@@ -214,7 +214,7 @@ class Freebox_OS extends eqLogic {
 					$total_bytes=$Disques['partitions'][0]['total_bytes'];
 					$used_bytes=$Disques['partitions'][0]['used_bytes'];
 					$value=round($used_bytes/$total_bytes*100);
-					log::add('Freebox_OS','debug','Occupation ['.$Disques['type'].'] - '.$Disques['id'].': '. $used_bytes.'/'.$total_bytes.' => '.$value'%');
+					log::add('Freebox_OS','debug','Occupation ['.$Disques['type'].'] - '.$Disques['id'].': '. $used_bytes.'/'.$total_bytes.' => '.$value.'%');
 					$Disque=self::AddEqLogic('Disque Dur','Disque');
 					$commande=self::AddCommande($Disque,'Occupation ['.$Disques['type'].'] - '.$Disques['id'],$Disques['id'],"info",'numeric','Freebox_OS_Disque','%');
 					$commande->setCollectDate(date('Y-m-d H:i:s'));
