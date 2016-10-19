@@ -935,7 +935,7 @@ class Freebox_OSCmd extends cmd {
 				}
 			break;
 		}		
-		if ( (isset($return) && $this->execCmd() != $return) || (isset($return))){
+		if ((isset($return) && $this->execCmd() != $return))){
 			$this->setCollectDate(date('Y-m-d H:i:s'));
 			$this->setConfiguration('doNotRepeatEvent', 1);
 			$this->event($return);
