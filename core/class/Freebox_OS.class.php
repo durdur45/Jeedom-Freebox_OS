@@ -924,7 +924,10 @@ class Freebox_OSCmd extends cmd {
 				}
 			break;
 			case'AirPlay':
-				$receiver=$this->getEqLogic()->getCmd(null,"ActualAirmedia")->execCmd();
+				$receivers=$this->getEqLogic()->getCmd(null,"ActualAirmedia");
+				$receiver=$receivers->execCmd();
+				$receivers->setCollectDate(date('Y-m-d H:i:s'));
+				$receivers->save();
 				switch($this->getLogicalId()){
 					case "airmediastart":
 						$return = $this->getEqLogic()->AirMediaAction($receiver,"start",$_options['titre'],$_options['message']);
@@ -935,7 +938,7 @@ class Freebox_OSCmd extends cmd {
 				}
 			break;
 		}		
-		if ((isset($return) && $this->execCmd() != $return))){
+		if (isset($return) && $this->execCmd() != $return){
 			$this->setCollectDate(date('Y-m-d H:i:s'));
 			$this->setConfiguration('doNotRepeatEvent', 1);
 			$this->event($return);
