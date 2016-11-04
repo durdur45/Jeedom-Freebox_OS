@@ -11,7 +11,6 @@ class Freebox_OS extends eqLogic {
 			$return['launchable'] = 'nok';
 		$cache = cache::byKey('Freebox_OS::SessionToken');
 		$cron = cron::byClassAndFunction('Freebox_OS', 'RefreshInformation');
-		//if(config::byKey('FREEBOX_SERVER_SESSION_TOKEN','Freebox_OS')!='')
 		if(is_object($cron) && $cron->running() && is_object($cache) && $cache->getValue('')!='')
 			$return['state'] = 'ok';
 		else 
@@ -21,7 +20,6 @@ class Freebox_OS extends eqLogic {
 	public static function deamon_start($_debug = false) {
 		log::remove('Freebox_OS');
 		self::deamon_stop();
-		self::open_session();
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') 
 			return;
@@ -47,7 +45,8 @@ class Freebox_OS extends eqLogic {
 			$cron->stop();
 			$cron->remove();
 		}
-		self::close_session();
+		$cache = cache::byKey('Freebox_OS::SessionToken');
+		$cache->remove();
 	}
 	public function track_id() 	{
 		$serveur		=trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
@@ -106,7 +105,6 @@ class Freebox_OS extends eqLogic {
 		$json_connect=json_decode($json, true);
 		if ($json_connect['success']){
 			cache::set('Freebox_OS::SessionToken', $json_connect['result']['session_token'], 0);
-			//config::save('FREEBOX_SERVER_SESSION_TOKEN', $json_connect['result']['session_token'],'Freebox_OS');
 		}
 		else 
 			return false;
@@ -116,7 +114,6 @@ class Freebox_OS extends eqLogic {
 		$serveur=trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
 		$cache = cache::byKey('Freebox_OS::SessionToken');
 		$session_token = $cache->getValue('');
-		//$session_token=config::byKey('FREEBOX_SERVER_SESSION_TOKEN','Freebox_OS');
 		log::add('Freebox_OS','debug','Connexion ' . $method .' sur la l\'adresse '. $serveur.$api_url .'('.json_encode($params).')');
 	        $ch = curl_init();
 	        curl_setopt($ch, CURLOPT_URL, $serveur.$api_url);
@@ -156,9 +153,6 @@ class Freebox_OS extends eqLogic {
 		$http = new com_http($serveur . '/api/v3/login/logout/');
 		$http->setPost(array());
 		$json_close=$http->exec(2,2);
-		//$cache = cache::byKey('Freebox_OS::SessionToken');
-		//$cache->remove();
-		//config::save('FREEBOX_SERVER_SESSION_TOKEN','','Freebox_OS');
 		return $json_close;
 	}
 	public function WakeOnLAN($Mac){
