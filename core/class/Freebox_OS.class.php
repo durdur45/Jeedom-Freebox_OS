@@ -303,8 +303,9 @@ class Freebox_OS extends eqLogic {
 				return false;
 	}
 	public function freeboxPlayerPing(){
+			self::open_session();
 			$listEquipement = self::fetch('/api/v3/lan/browser/pub/');
-			
+			self::close_session();
 			if($listEquipement['success']){
 				$Reseau=Freebox_OS::AddEqLogic('Réseau','Reseau');
 				foreach($listEquipement['result'] as $Equipement)
