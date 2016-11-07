@@ -47,8 +47,8 @@ $eqLogics = eqLogic::byType('Freebox_OS');
             <fieldset>
 				<legend>
 						<i class="fa fa-arrow-circle-left eqLogicAction cursor" data-action="returnToThumbnailDisplay"></i> Général  
-						<i class="fa fa-cogs eqLogicAction pull-right cursor expertModeVisible" data-action="configure"></i>
-						<a class="btn btn-default btn-xs pull-right expertModeVisible eqLogicAction" data-action="copy"><i class="fa fa-copy"></i>Dupliquer</a>
+						<a class="btn btn-default btn-xs pull-right eqLogicAction expertModeVisible" data-action="configure"><i class="fa fa-cogs"></i> Configuration avancée</a>
+						<a class="btn btn-default btn-xs pull-right eqLogicAction expertModeVisible" data-action="copy"><i class="fa fa-copy"></i>Dupliquer</a>
 						<a class="btn btn-success btn-xs eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> Sauvegarder</a>
 						<a class="btn btn-danger btn-xs eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> Supprimer</a>
 				</legend>
