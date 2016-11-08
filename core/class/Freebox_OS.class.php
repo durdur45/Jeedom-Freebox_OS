@@ -6,7 +6,12 @@ class Freebox_OS extends eqLogic {
 	public static $_widgetPossibility = array('custom' => array(
 	        'visibility' => true,
 	        'displayName' => true,
+	        'displayObjectName' => true,
 	        'optionalParameters' => true,
+	        'background-color' => true,
+	        'text-color' => true,
+	        'border' => true,
+	        'border-radius' => true
 	));
 	public static function deamon_info() {
 		$return = array();
