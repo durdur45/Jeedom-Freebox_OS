@@ -167,31 +167,30 @@ class Freebox_OS extends eqLogic {
 		return $json_close;
 	}
 	public function WakeOnLAN($Mac){
-			$return=self::fetch('/api/v3/lan/wol/pub/',array("mac"=> $Mac,"password"=> ""),"POST");	
-			return $return['success'];
+		$return=self::fetch('/api/v3/lan/wol/pub/',array("mac"=> $Mac,"password"=> ""),"POST");	
+		return $return['success'];
 	}
     	public function Downloads($Etat){
-			$List_DL=self::fetch('/api/v3/downloads/');
-			$nbDL=count($List_DL['result']);
-                        for($i = 0; $i < $nbDL; ++$i)
-			{
-				if ($Etat==0)
-	        	                $Downloads=self::fetch('/api/v3/downloads/'.$List_DL['result'][$i]['id'],array("status"=>"stopped"),"PUT");
-				if ($Etat==1)
-					$Downloads=self::fetch('/api/v3/downloads/'.$List_DL['result'][$i]['id'],array("status"=>"downloading"),"PUT");
-                        }        
-                                if($Downloads['success'])
-                                        return $Downloads['success'];
-                                else
-                                        return false;                                                                                                                                                                                     
+		$List_DL=self::fetch('/api/v3/downloads/');
+		$nbDL=count($List_DL['result']);
+		for($i = 0; $i < $nbDL; ++$i)
+		{
+			if ($Etat==0)
+				$Downloads=self::fetch('/api/v3/downloads/'.$List_DL['result'][$i]['id'],array("status"=>"stopped"),"PUT");
+			if ($Etat==1)
+				$Downloads=self::fetch('/api/v3/downloads/'.$List_DL['result'][$i]['id'],array("status"=>"downloading"),"PUT");
+		}        
+		if($Downloads['success'])
+			return $Downloads['success'];
+		else
+			return false;                                                                                                                                                                                     
 	}
 	public function DownloadStats(){
 		$DownloadStats = self::fetch('/api/v3/downloads/stats/');
-          		
-			if($DownloadStats['success'])
-				return $DownloadStats['result'];
-			else
-				return false;
+		if($DownloadStats['success'])
+			return $DownloadStats['result'];
+		else
+			return false;
 	}
 	public function PortForwarding($Port){
 			$PortForwarding = self::fetch('/api/v3/fw/redir/');
