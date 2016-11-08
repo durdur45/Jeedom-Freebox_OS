@@ -580,7 +580,7 @@ class Freebox_OS extends eqLogic {
 			'#id#' => $this->getId(),
 			'#name#' => ($this->getIsEnable()) ? $this->getName() : '<del>' . $this->getName() . '</del>',
 			'#eqLink#' => $this->getLinkToConfiguration(),
-			'#background#' => $this->getBackgroundColor($_version),		
+			'#background-color#' => $this->getBackgroundColor($_version),		
 			'#height#' => $this->getDisplay('height', 'auto'),
 			'#width#' => $this->getDisplay('width', '250'),
 			'#cmd#' => ""
