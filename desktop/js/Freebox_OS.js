@@ -1,4 +1,11 @@
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$('.MaFreebox').on('click', function() {
+	$('#md_modal').dialog({
+		title: "{{Parametre Freebox}}",
+		height: 700,
+		width: 850});
+	$('#md_modal').load('index.php?v=d&modal=MaFreebox&plugin=Freebox_Os&type=Freebox_Os').dialog('open');
+});
 $('.Equipement').on('click', function() {
 	$.ajax({
 		type: 'POST',            
