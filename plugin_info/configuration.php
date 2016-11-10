@@ -53,7 +53,7 @@ if (!isConnect()) {
 		<div class="form-group">
 			<label class="col-md-2 control-label" >{{Ouvrir les parametrse de ma freebos.}}</label>
 			<div class="col-md-3">
-				<a class="btn btn-succes MaFreebox" ><i class="icon techno-freebox"></i> {{Parametrage}}</a>
+				<a class="btn btn-success MaFreebox" ><i class="icon techno-freebox"></i> {{Parametrage}}</a>
 			</div>
 		</div>	
 	</fieldset> 
