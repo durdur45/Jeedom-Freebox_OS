@@ -50,6 +50,12 @@ if (!isConnect()) {
 				<a class="btn btn-primary FreeboxAppaire" ><i class="fa fa-rss"></i> {{Appairage}}</a>
 			</div>
 		</div>	
+		<div class="form-group">
+			<label class="col-md-2 control-label" >{{Ouvrir les parametrse de ma freebos.}}</label>
+			<div class="col-md-3">
+				<a class="btn btn-succes MaFreebox" ><i class="icon techno-freebox"></i> {{Parametrage}}</a>
+			</div>
+		</div>	
 	</fieldset> 
 </form>
 <?php include_file('desktop', 'configuration', 'js' , 'Freebox_OS'); ?>
