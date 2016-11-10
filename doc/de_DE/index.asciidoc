@@ -1,6 +1,6 @@
 == FreeboxOS
 
-=== Beschreibung
+=== Description
 Ce plugin permet de récupérer les informations de votre freeboxOS (Serveur Freebox Revolution ou 4K).
 
 Les informations disponibles de votre Freebox Serveur sur Jeedom sont:

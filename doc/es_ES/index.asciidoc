@@ -16,14 +16,14 @@ Les informations disponibles de votre Freebox Serveur sur Jeedom sont:
  * Couper le wifi
  * Redemarrer votre freebox
 
-"
+'''
 === Installation et Configuration
 include::Installation.asciidoc[]
 
-"
+'''
 === FAQ
 include::faq.asciidoc[]
 
-"
+'''
 === Changelog
 include::changelog.asciidoc[]
