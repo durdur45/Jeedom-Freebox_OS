@@ -4,7 +4,7 @@ $('.MaFreebox').on('click', function() {
 		title: "{{Parametre Freebox}}",
 		height: 700,
 		width: 850});
-	$('#md_modal').load('index.php?v=d&modal=MaFreebox&plugin=Freebox_Os&type=Freebox_Os').dialog('open');
+	$('#md_modal').load('index.php?v=d&modal=MaFreebox&plugin=Freebox_OS&type=Freebox_OS').dialog('open');
 });
 $('.Equipement').on('click', function() {
 	$.ajax({
