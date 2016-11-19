@@ -12,12 +12,12 @@ Les informations disponibles de votre Freebox Serveur sur Jeedom sont:
  * Les débits internet
  * L'état de votre connexion
  * La place disponible dans vos disques connectés à la Freebox Serveur. 
- * L’état de chaque équipement DHCP 
- * Couper le wifi
- * Redemarrer votre freebox
+ * Each DHCP equipment State 
+ * Switch off the wifi
+ * Reboot your freebox
 
 '''
-=== Installation et Configuration
+=== Installation and Settings
 include::Installation.asciidoc[]
 
 '''
