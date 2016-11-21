@@ -1,64 +1,48 @@
 $('.FreeboxAppaire').on('click',function(){
 	$.ajax({
-        type: "POST", 
-        url: "plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php", 
-        data: 
-		{
-            action: "connect",
-        },
-        dataType: 'json',
-        error: function(request, status, error) 
-		{
-			handleAjaxError(request, status, error);
-        },
-        success: function(data) 
-		{ 
+		type: "POST", 
+		url: "plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php", 
+		data: {
+		    action: "connect",
+		},
+		dataType: 'json',
+		error: function(request, status, error) {
+				handleAjaxError(request, status, error);
+		},
+		success: function(data) { 
 
-			if (!data.result.success) 
-			{
-			   $('#div_alert').showAlert({message: data.result.msg, level: 'danger'});
-			   
-			   if(data.result.error_code=="new_apps_denied")
-			   {
-					$('#div_alert').append(".<br>Pour activer l'option il faut se rendre dans : mafreebox.free.fr -> Paramètres de la Freebox -> Gestion des accès <br> Et cocher : <b>Permettre les nouvelles demandes d'associations</b>  -> Appliquer<br>De nouveaux cliquez sur <b>Etape 1</b>");
-			   }
-                return;
-            }
-			else
-			{
-				sendToBdd(data.result);		
-				bootbox.confirm('{{Il faut aller valider Jeedom sur la Freebox Server, cliquez sur la flèche OUI }}', function (result) {
-					if (result)
-						AskTrackAuthorization();					
-				});
-			}
-        }
-    });
+				if (!data.result.success) {
+					$('#div_alert').showAlert({message: data.result.msg, level: 'danger'});
+					if(data.result.error_code=="new_apps_denied")
+						$('#div_alert').append(".<br>Pour activer l'option il faut se rendre dans : mafreebox.free.fr -> Paramètres de la Freebox -> Gestion des accès <br> Et cocher : <b>Permettre les nouvelles demandes d'associations</b>  -> Appliquer<br>De nouveaux cliquez sur <b>Etape 1</b>");
+					return;
+				}else{
+					sendToBdd(data.result);		
+					bootbox.confirm('{{Il faut aller valider Jeedom sur la Freebox Server, cliquez sur la flèche OUI }}', function (result) {
+						if (result)
+							AskTrackAuthorization();					
+					});
+				}
+		}
+    	});
 });
 function AskTrackAuthorization(){
 	$.ajax({
 		type: "POST", 
 		url: "plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php", 
-		data: 
-		{
+		data:{
 			action: "ask_track_authorization",
 		},
 		dataType: 'json',
-		error: function(request, status, error) 
-		{
+		error: function(request, status, error) {
 			handleAjaxError(request, status, error);
 		},
-		success: function(data) 
-		{ 
+		success: function(data) { 
 			//console.log(data);
-			if (!data.result.success) 
-			{
+			if (!data.result.success) {
 				$('#div_alert').showAlert({message: data.result.msg, level: 'danger'});
-			} 
-			else 
-			{
-				switch(data.result.result.status)
-				{
+			} else 	{
+				switch(data.result.result.status){
 					case "unknown":
 						$('#div_alert').showAlert({message: "Tu n'as pas validé à temps l'application, merci re-sauvgarder", level: 'danger'});
 						break;
@@ -91,26 +75,20 @@ function TryAPI(){
 	$.ajax({
 		type: "POST", 
 		url: "plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php", 
-		data: 
-		{
+		data: {
 			action	: "SearchReseau",
 		},
 		dataType: 'json',
-		error: function(request, status, error) 
-		{
+		error: function(request, status, error) {
 			handleAjaxError(request, status, error);
 		},
-		success: function(data) 
-		{ 
+		success: function(data) { 
 			//console.log(data);
 			//var fbxRetour= JSON.parse(data.result);
-			if (!data.result) 
-			{
+			if (!data.result) {
 			   $('#div_alert').showAlert({message: "Problème d'enregistrement avec l'API.", level: 'danger'});
 			   return;
-			}
-			else
-			{
+			}else{
 				//console.log("Test de L'API ... :");
 				var messageOut="L'application est validée et peut etre utilisée. Vous avez fini la configuration.<br>";
 				messageOut+="Toute fois, il faut activer manuellement une option si vous désirer redémarrer la Freebox depuis Jeedom. Il faut vous rendre sur : mafreebox.free.fr <br>";
@@ -126,28 +104,23 @@ function TryAPI(){
 function sendToBdd(jsonParser){
 	var fbx_app_token	= jsonParser.result.app_token;
 	var fbx_track_id	= jsonParser.result.track_id;
-	
 	$.ajax({
-        type: "POST", 
-        url: "plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php", 
-        data: 
-		{
-            action		: "sendToBdd",
-            app_token	: fbx_app_token,
-			track_id	: fbx_track_id
-        },
-        dataType: 'json',
-        error: function(request, status, error) 
-		{
-			handleAjaxError(request, status, error);
-        },
-        success: function(data) 
-		{ 
-			if (!data) 
-			{
-			   $('#div_alert').showAlert({message: data, level: 'danger'});
-               return;
-            }
-        }
-    });
+		type: "POST", 
+		url: "plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php", 
+		data: {
+		    action		: "sendToBdd",
+		    app_token	: fbx_app_token,
+				track_id	: fbx_track_id
+		},
+		dataType: 'json',
+		error: function(request, status, error) {
+				handleAjaxError(request, status, error);
+		},
+		success: function(data) { 
+			if (!data) {
+				$('#div_alert').showAlert({message: data, level: 'danger'});
+		 		return;
+			}
+		}
+	});
 }
