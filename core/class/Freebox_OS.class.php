@@ -336,8 +336,8 @@ class Freebox_OS extends eqLogic {
 							}
 						}
 						if($Commande->execCmd() != $Equipement['active']){
-							$commande->setCollectDate(date('Y-m-d H:i:s'));
-							$commande->setConfiguration('doNotRepeatEvent', 1);
+							$Commande->setCollectDate(date('Y-m-d H:i:s'));
+							$Commande->setConfiguration('doNotRepeatEvent', 1);
 							$Commande->event($Equipement['active']);
 						}
 						$Commande->save();	
