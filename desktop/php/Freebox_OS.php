@@ -43,7 +43,7 @@ $eqLogics = eqLogic::byType('Freebox_OS');
 			    	<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>Parametre Freebox</center></span>
 			</div>
 		</div>
-        <legend>{{Mes camera surveiller}}</legend>
+        <legend>{{Mes Equipements Freebox OS}}</legend>
 		<div class="eqLogicThumbnailContainer">
 			<?php
 			if (count($eqLogics) == 0) {
