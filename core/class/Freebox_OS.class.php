@@ -583,6 +583,7 @@ class Freebox_OS extends eqLogic {
 		if ($this->getDisplay('hideOn' . $version) == 1) {
 			return '';
 		}
+		$replace['#cmd#']='';
 		if($this->getLogicalId()=='Reseau'||$this->getLogicalId()=='System')
 		{
 			if ($this->getIsEnable()) {
