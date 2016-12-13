@@ -575,14 +575,14 @@ class Freebox_OS extends eqLogic {
 		}
     }
 	public function toHtml($_version = 'mobile') {
-		$version = jeedom::versionAlias($_version);
-		$replace = $this->preToHtml($version);
+		$replace = $this->preToHtml($_version);
 		if (!is_array($replace)) {
 			return $replace;
 		}
-		if ($this->getDisplay('hideOn' . $version) == 1) {
+		$version = jeedom::versionAlias($_version);
+		/*if ($this->getDisplay('hideOn' . $version) == 1) {
 			return '';
-		}
+		}*/
 		$replace['#cmd#']='';
 		if($this->getLogicalId()=='Reseau'||$this->getLogicalId()=='System')
 		{
