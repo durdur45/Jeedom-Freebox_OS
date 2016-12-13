@@ -920,7 +920,7 @@ class Freebox_OSCmd extends cmd {
 					break;
 					case 'power':
 						$result=$this->getEqLogic()->send_cmd_fbxtv($this->getLogicalId());
-						cmd::byLogicalId('powerstat')->execute();
+						 $this->getEqLogic()->getCmd('info','powerstat')->execute();
 					break;
 					default:
 						$result=$this->getEqLogic()->send_cmd_fbxtv($this->getLogicalId());
