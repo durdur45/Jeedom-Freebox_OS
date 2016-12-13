@@ -170,7 +170,7 @@ class Freebox_OS extends eqLogic {
 		$return=self::fetch('/api/v3/lan/wol/pub/',array("mac"=> $Mac,"password"=> ""),"POST");	
 		return $return['success'];
 	}
-    	public function Downloads($Etat){
+   	public function Downloads($Etat){
 		$List_DL=self::fetch('/api/v3/downloads/');
 		$nbDL=count($List_DL['result']);
 		for($i = 0; $i < $nbDL; ++$i)
@@ -613,12 +613,7 @@ class Freebox_OS extends eqLogic {
 				}
 			}     
 		}
-		if ($_version == 'dview' || $_version == 'mview') {
-			$object = $this->getObject();
-			$replace['#name#'] = (is_object($object)) ? $object->getName() . ' - ' . $replace['#name#'] : $replace['#name#'];
-		}
-		
-		return template_replace($replace, getTemplate('core', $_version, $this->getLogicalId(),'Freebox_OS'));
+		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, $this->getLogicalId(), 'Freebox_OS')));
 	}
 	public function preSave() {	
 		switch($this->getLogicalId())	{
@@ -920,7 +915,7 @@ class Freebox_OSCmd extends cmd {
 					break;
 					case 'power':
 						$result=$this->getEqLogic()->send_cmd_fbxtv($this->getLogicalId());
-						cmd::byLogicalId('powerstat')->execute();
+						 $this->getEqLogic()->getCmd('info','powerstat')->execute();
 					break;
 					default:
 						$result=$this->getEqLogic()->send_cmd_fbxtv($this->getLogicalId());
