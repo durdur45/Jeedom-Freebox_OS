@@ -575,11 +575,11 @@ class Freebox_OS extends eqLogic {
 		}
     }
 	public function toHtml($_version = 'mobile') {
-		$replace = $this->preToHtml($_version);
+		$version = jeedom::versionAlias($_version);
+		$replace = $this->preToHtml($version);
 		if (!is_array($replace)) {
 			return $replace;
 		}
-		$version = jeedom::versionAlias($_version);
 		if ($this->getDisplay('hideOn' . $version) == 1) {
 			return '';
 		}
