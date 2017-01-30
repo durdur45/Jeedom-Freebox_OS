@@ -586,7 +586,6 @@ class Freebox_OS extends eqLogic {
 		$replace['#cmd#']='';
 		switch($this->getLogicalId()){
 			case 'Reseau':
-			case 'System':
 				$EquipementsHtml='';
 				foreach ($this->getCmd(null, null, true) as $cmd) {
 					$replaceCmd['#host_type#'] = $cmd->getConfiguration('host_type');
@@ -600,8 +599,8 @@ class Freebox_OS extends eqLogic {
 				foreach ($this->getCmd(null, null, true) as $cmd) 
 					 $replace['#cmd#'] .= $cmd->toHtml($_version);
 			default:
-				foreach ($this->getCmd(null, null, true) as $cmd) 
-					 $replace['#'.$cmd->getLogicalId().'#'] = $cmd->toHtml($_version);
+				//foreach ($this->getCmd(null, null, true) as $cmd) 
+				//	 $replace['#'.$cmd->getLogicalId().'#'] = $cmd->toHtml($_version);
 			break;
 		}
 		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, $this->getLogicalId(), 'Freebox_OS')));
