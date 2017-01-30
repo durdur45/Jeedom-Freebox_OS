@@ -585,6 +585,7 @@ class Freebox_OS extends eqLogic {
 		}
 		$replace['#cmd#']='';
 		switch($this->getLogicalId()){
+			case 'System':
 			case 'Reseau':
 				$EquipementsHtml='';
 				foreach ($this->getCmd(null, null, true) as $cmd) {
