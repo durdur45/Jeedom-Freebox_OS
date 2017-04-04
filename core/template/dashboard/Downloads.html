@@ -25,7 +25,7 @@
                         <span title="Nombre de tâche(s) en réparation" class="fa fa-wrench" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_repairing#</span>
         </div>
-	<div class="tooltips" style="margin-left:20px;">
+	<div class="tooltips nb_tasks_checking" style="margin-left:20px;">
                         <span title="Nombre de tâche(s) en vérification" class="fa fa-search" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_checking#</span>
         </div>
@@ -49,7 +49,7 @@
                         <span title="Téléchargement en cours" class="fa fa-download" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_downloading#</span>
         </div>
-        <div class="tooltips" style="margin-left:20px;">
+        <div class="tooltips rx_rate" style="margin-left:20px;">
                         <span title="Vitesse réception" class="fa fa-long-arrow-down" style="min-width:15px;float:left;"></span>
                         <span>#rx_rate#</span>
         </div>
@@ -65,8 +65,20 @@
 	</section>
 	</div>
 	<script>
+		$('.nb_tasks').hide();
+		$('.nb_tasks_active').hide();
+		$('.nb_tasks_extracting').hide();
+		$('.nb_tasks_repairing').hide();
+		$('.nb_tasks_checking').hide();
+		$('.nb_tasks_queued').hide();
+		$('.nb_tasks_error').hide();
+		$('.nb_tasks_stopped').hide();
+		$('.nb_tasks_done').hide();
+		$('.nb_tasks_downloading').hide();
+		$('.rx_rate').hide();
+		$('.tx_rate').hide();
 		$.each(JSON.parse('#masque#'), function(i, item) {
-			$('.'+item).hide();	
+			$('.'+item).show();	
 		});
 	</script>
 </div>
