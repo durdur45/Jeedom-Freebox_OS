@@ -65,53 +65,8 @@
 	</section>
 	</div>
 	<script>
-		if("#nb_tasks#" == "")
-			$('.nb_tasks').hide();	
-		else
-			$('.nb_tasks').show();	
-		if("#nb_tasks_active#" == "")
-			$('.nb_tasks_active').hide();	
-		else
-			$('.nb_tasks_active').show();	
-		if("#nb_tasks_extracting#" == "")
-			$('.nb_tasks_extracting').hide();	
-		else
-			$('.nb_tasks_extracting').show();	
-		if("#nb_tasks_repairing#" == "")
-			$('.nb_tasks_repairing').hide();	
-		else
-			$('.nb_tasks_repairing').show();	
-		if("#nb_tasks_checking#" == "")
-			$('.nb_tasks_checking').hide();	
-		else
-			$('.nb_tasks_checking').show();	
-		if("#nb_tasks_queued#" == "")
-			$('.nb_tasks_queued').hide();	
-		else
-			$('.nb_tasks_queued').show();	
-		if("#nb_tasks_error#" == "")
-			$('.nb_tasks_error').hide();	
-		else
-			$('.nb_tasks_error').show();	
-		if("#nb_tasks_stopped#" == "")
-			$('.nb_tasks_stopped').hide();	
-		else
-			$('.nb_tasks_stopped').show();	
-		if("#nb_tasks_done#" == "")
-			$('.nb_tasks_done').hide();	
-		else
-			$('.nb_tasks_done').show();	
-		if("#nb_tasks_downloading#" == "")
-			$('.nb_tasks_downloading').hide();	
-		else
-			$('.nb_tasks_downloading').show();	
-		if("#rx_rate#" == "")
-			$('.rx_rate').hide();	
-		else
-			$('.rx_rate').show();	
-		if("#tx_rate#" == "")
-			$('.tx_rate').hide();	
-		else
-			$('.tx_rate').show();	
+		$.each(JSON.parse("#masque#"), function(i, item) {
+			$('.'+item).hide();	
+		});
 	</script>
 </div>
