@@ -601,11 +601,12 @@ class Freebox_OS extends eqLogic {
 					 $replace['#cmd#'] .= $cmd->toHtml($_version);
 			default:
 				foreach ($this->getCmd(null, null, true) as $cmd) {
-					if(!$cmd->getIsVisible())
+					if($cmd->getIsVisible())
+						$replace['#'.$cmd->getLogicalId().'#'] = $cmd->toHtml($_version);
+					else	
 						$masque[]=$cmd->getLogicalId();
-					 $replace['#masque#']=json_encode($masque);
-					 $replace['#'.$cmd->getLogicalId().'#'] = $cmd->toHtml($_version);
 				}
+				$replace['#masque#']=json_encode($masque);
 			break;
 		}
 		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, $this->getLogicalId(), 'Freebox_OS')));
