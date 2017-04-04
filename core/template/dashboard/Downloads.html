@@ -9,19 +9,19 @@
 			<hr style="margin-top:0px;margin-bottom:3px;border:0px;height:1px;width:100%;background-image:-webkit-linear-gradient(left,rgba(255,255,255,0),rgba(255,255,255,0.75),rgba(255,255,255,0));background-image:-moz-linear-gradient(left,rgba(255,255,255,0),rgba(255,255,255,0.75),rgba(255,255,255,0));background-image:-ms-linear-gradient(left,rgba(255,255,255,0),rgba(255,255,255,0.75),rgba(255,255,255,0));background-image:-o-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,0.75), rgba(255,255,255,0));}">
 		</section>
     <section style="height:87%;padding:5px;">
-        <div  class="tooltips" style="margin-left:20px;">
+        <div  class="tooltips nb_tasks" style="margin-left:20px;">
                         <span title="Nombre de tâche(s)" class="fa fa-thumb-tack" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks#</span>
 	</div>
- 	<div class="tooltips" style="margin-left:20px;">
+ 	<div class="tooltips nb_tasks_active" style="margin-left:20px;">
                         <span title="Nombre de tâche(s) active" class="fa fa-cog" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_active#</span>
         </div>
-        <div class="tooltips" style="margin-left:20px;">
+        <div class="tooltips nb_tasks_extracting" style="margin-left:20px;">
                         <span title="Nombre de tâche(s) en extraction" class="fa fa-sign-out" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_extracting#</span>
         </div>
-        <div class="tooltips" style="margin-left:20px;">
+        <div class="tooltips nb_tasks_repairing" style="margin-left:20px;">
                         <span title="Nombre de tâche(s) en réparation" class="fa fa-wrench" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_repairing#</span>
         </div>
@@ -29,23 +29,23 @@
                         <span title="Nombre de tâche(s) en vérification" class="fa fa-search" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_checking#</span>
         </div>
-        <div class="tooltips" style="margin-left:20px;">
+        <div class="tooltips nb_tasks_queued" style="margin-left:20px;">
                         <span title="Nombre de tâche(s) en attente" class="fa fa-refresh" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_queued#</span>
         </div>
-        <div class="tooltips" style="margin-left:20px;">
+        <div class="tooltips nb_tasks_error" style="margin-left:20px;">
                         <span title="Nombre de tâche(s) en erreur" class="fa fa-times" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_error#</span>
         </div>
-        <div class="tooltips" style="margin-left:20px;">
+        <div class="tooltips nb_tasks_stopped" style="margin-left:20px;">
                         <span title="Nombre de tâche(s) stoppée(s)" class="fa fa-stop" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_stopped#</span>
         </div>
-        <div class="tooltips" style="margin-left:20px;">
+        <div class="tooltips nb_tasks_done" style="margin-left:20px;">
                         <span title="Nombre de tâche(s) terminée(s)" class="fa fa-check" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_done#</span>
         </div>
-        <div class="tooltips" style="margin-left:20px;;">
+        <div class="tooltips nb_tasks_downloading" style="margin-left:20px;;">
                         <span title="Téléchargement en cours" class="fa fa-download" style="min-width:15px;float:left;"></span>
                         <span>#nb_tasks_downloading#</span>
         </div>
@@ -53,7 +53,7 @@
                         <span title="Vitesse réception" class="fa fa-long-arrow-down" style="min-width:15px;float:left;"></span>
                         <span>#rx_rate#</span>
         </div>
-        <div class="tooltips" style="margin-left:20px;">
+        <div class="tooltips tx_rate" style="margin-left:20px;">
                         <span title="Vitesse émission" class="fa fa-long-arrow-up" style="min-width:15px;float:left;"></span>
                         <span>#tx_rate#</span>
 	</div>
@@ -64,4 +64,54 @@
         </div></center>
 	</section>
 	</div>
+	<script>
+		if("#nb_tasks#" == "")
+			$('.nb_tasks').hide();	
+		else
+			$('.nb_tasks').show();	
+		if("#nb_tasks_active#" == "")
+			$('.nb_tasks_active').hide();	
+		else
+			$('.nb_tasks_active').show();	
+		if("#nb_tasks_extracting#" == "")
+			$('.nb_tasks_extracting').hide();	
+		else
+			$('.nb_tasks_extracting').show();	
+		if("#nb_tasks_repairing#" == "")
+			$('.nb_tasks_repairing').hide();	
+		else
+			$('.nb_tasks_repairing').show();	
+		if("#nb_tasks_checking#" == "")
+			$('.nb_tasks_checking').hide();	
+		else
+			$('.nb_tasks_checking').show();	
+		if("#nb_tasks_queued#" == "")
+			$('.nb_tasks_queued').hide();	
+		else
+			$('.nb_tasks_queued').show();	
+		if("#nb_tasks_error#" == "")
+			$('.nb_tasks_error').hide();	
+		else
+			$('.nb_tasks_error').show();	
+		if("#nb_tasks_stopped#" == "")
+			$('.nb_tasks_stopped').hide();	
+		else
+			$('.nb_tasks_stopped').show();	
+		if("#nb_tasks_done#" == "")
+			$('.nb_tasks_done').hide();	
+		else
+			$('.nb_tasks_done').show();	
+		if("#nb_tasks_downloading#" == "")
+			$('.nb_tasks_downloading').hide();	
+		else
+			$('.nb_tasks_downloading').show();	
+		if("#rx_rate#" == "")
+			$('.rx_rate').hide();	
+		else
+			$('.rx_rate').show();	
+		if("#tx_rate#" == "")
+			$('.tx_rate').hide();	
+		else
+			$('.tx_rate').show();	
+	</script>
 </div>
