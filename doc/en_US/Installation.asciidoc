@@ -1,4 +1,4 @@
-Un fois, le plugin installé et activé, nous devons procéder à un appairage du serveur jeedom sur la freebox.
+Once the plugin installed and activated, we need to pair the server jeedom to the freebox.
 
 image::../images/Freebox_OS_screenshot_configuration.jpg[]
 

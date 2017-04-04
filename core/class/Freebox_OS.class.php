@@ -584,9 +584,9 @@ class Freebox_OS extends eqLogic {
 			return '';
 		}
 		$replace['#cmd#']='';
-		if($this->getLogicalId()=='Reseau'||$this->getLogicalId()=='System')
-		{
-			if ($this->getIsEnable()) {
+		switch($this->getLogicalId()){
+			case 'System':
+			case 'Reseau':
 				$EquipementsHtml='';
 				foreach ($this->getCmd(null, null, true) as $cmd) {
 					$replaceCmd['#host_type#'] = $cmd->getConfiguration('host_type');
@@ -594,24 +594,19 @@ class Freebox_OS extends eqLogic {
 					$replaceCmd['#IPV6#'] = $cmd->getConfiguration('IPV6');
 					$EquipementsHtml.=template_replace($replaceCmd, $cmd->toHtml($_version));
 				}
-			}     
-			$replace['#Equipements#'] = $EquipementsHtml;
-		}
-		elseif($this->getLogicalId()=='Disque')
-		{
-			if ($this->getIsEnable()) {
-				foreach ($this->getCmd(null, null, true) as $cmd) {
+				$replace['#Equipements#'] = $EquipementsHtml;
+			break;
+			case 'Disque':		
+				foreach ($this->getCmd(null, null, true) as $cmd) 
 					 $replace['#cmd#'] .= $cmd->toHtml($_version);
-				}
-			}     
-		}
-		else
-		{
-			if ($this->getIsEnable()) {
+			default:
 				foreach ($this->getCmd(null, null, true) as $cmd) {
-					 $replace['#'.$cmd->getLogicalId().'#'] = $cmd->toHtml($_version);
+					if($cmd->getIsVisible())	
+						$masque[]=$cmd->getLogicalId();
+					$replace['#'.$cmd->getLogicalId().'#'] = $cmd->toHtml($_version);
 				}
-			}     
+				$replace['#masque#']=json_encode($masque);
+			break;
 		}
 		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, $this->getLogicalId(), 'Freebox_OS')));
 	}
