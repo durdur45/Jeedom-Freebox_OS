@@ -656,7 +656,8 @@ class Freebox_OS extends eqLogic {
 	}
 	public static function RefreshInformation() {
 		while(true){
-			self::open_session();
+			if(self::open_session()===false)
+				break;
 			foreach(eqLogic::byType('Freebox_OS') as $Equipement){
 				if($Equipement->getIsEnable()){
 					foreach($Equipement->getCmd('info') as $Commande){
@@ -667,6 +668,7 @@ class Freebox_OS extends eqLogic {
 			self::close_session();
 			sleep(config::byKey('DemonSleep','Freebox_OS'));
 		}
+		self::deamon_stop():
 	}
 	public static function dependancy_info() {
 		$return = array();
