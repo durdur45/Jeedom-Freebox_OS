@@ -668,7 +668,7 @@ class Freebox_OS extends eqLogic {
 			self::close_session();
 			sleep(config::byKey('DemonSleep','Freebox_OS'));
 		}
-		self::deamon_stop():
+		self::deamon_stop();
 	}
 	public static function dependancy_info() {
 		$return = array();
