@@ -1,0 +1,10 @@
+{
+	"id" : "Freebox_OS",
+	"name" : "Freebox OS",
+	"description" : "Plugin pour commander la Freebox OS",
+	"licence" : "AGPL",
+	"author" : "Halbout Michael",
+	"require" : "3.0",
+	"category" : "communication",
+	"mobile" : "event"
+}
