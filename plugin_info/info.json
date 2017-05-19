@@ -6,5 +6,6 @@
 	"author" : "Halbout Michael",
 	"require" : "3.0",
 	"category" : "communication",
-	"mobile" : "event"
+	"hasOwnDeamon" : true,
+	"hasDependency" : true
 }
