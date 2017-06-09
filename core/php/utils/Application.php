@@ -1,6 +1,6 @@
 <?php
 namespace alphayax\freebox\utils;
-use alphayax\freebox\api\v3\services;
+use ..\api\v3\services;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Logger;
 
