@@ -6,6 +6,7 @@
 	"author" : "Halbout Michael",
 	"require" : "3.0",
 	"category" : "communication",
+	"display" : "panel",
 	"hasOwnDeamon" : true,
 	"hasDependency" : true
 }
