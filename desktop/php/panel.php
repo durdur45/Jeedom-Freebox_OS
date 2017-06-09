@@ -26,6 +26,26 @@
 		<div class="row">
 			<div class="col-lg-6">
 				<legend>{{Mon casier}}</legend>
+				<?php
+
+					/// Require Composer AutoLoader
+					require_once 'plugins/Freebox_OS/core/php/utils/Application.php';
+					$app_id =trim(config::byKey('FREEBOX_SERVER_APP_ID','Freebox_OS'));
+					$app_name=trim(config::byKey('FREEBOX_SERVER_APP_NAME','Freebox_OS'));
+					$app_version=trim(config::byKey('FREEBOX_SERVER_APP_VERSION','Freebox_OS'));
+					/// Define our application
+					$App = new \alphayax\freebox\utils\Application($app_id,$app_name,$app_version);
+					$App->authorize();
+					$App->openSession();
+
+					$FilterService = new \alphayax\freebox\api\v3\services\ParentalControl\Filter( $App);
+					$Config = $FilterService->getConfiguration();
+					print_r( $Config);
+
+					$Filters = $FilterService->getAll();
+					print_r( $Filters);
+
+				?>
 			</div>
 			<div class="col-lg-6">
 				<legend>{{Ma liste de vin}}</legend>
