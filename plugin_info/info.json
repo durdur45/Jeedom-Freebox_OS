@@ -6,7 +6,6 @@
 	"author" : "Halbout Michael",
 	"require" : "3.0",
 	"category" : "multimedia",
-	"display" : "panel",
 	"hasOwnDeamon" : true,
 	"hasDependency" : true
 }
