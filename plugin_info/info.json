@@ -4,8 +4,8 @@
 	"description" : "Plugin pour commander la Freebox OS",
 	"licence" : "AGPL",
 	"author" : "Halbout Michael",
-	"require" : "2.4",
-	"category" : "communication",
+	"require" : "3.0",
+	"category" : "multimedia",
 	"hasOwnDeamon" : true,
 	"hasDependency" : true
 }
