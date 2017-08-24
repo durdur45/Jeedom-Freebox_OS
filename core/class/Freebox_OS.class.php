@@ -895,10 +895,15 @@ class Freebox_OSCmd extends cmd {
 					$this->setConfiguration('host_type',$result['host_type']);
 					$this->save();
 					if (isset($result['active'])) {
-						if ($result['active'] == 'true')
-							$return=1;
-						else
-							$return=0;
+						if ($result['active'] == 'true') {
+                            $this->setOrder($this->getOrder() % 1000);
+                            $this->save();
+                            $return = 1;
+                        } else {
+                            $this->setOrder($this->getOrder() % 1000 + 1000);
+                            $this->save();
+                            $return = 0;
+                        }
 					} else {
 						$return=false;
 					}
