@@ -57,10 +57,13 @@
 </div>
 
 <script>
-	if('#state#'!=''&&'#state#'!='0')
-		$(".cmd[data-cmd_id=#id#] .lan-host-img").addClass('lan-#host_type#-1');
-	else
-		$(".cmd[data-cmd_id=#id#] .lan-host-img").addClass('lan-#host_type#-0');
+	if('#state#'!=''&&'#state#'!='0') {
+        $(".cmd[data-cmd_id=#id#] .lan-host-img").addClass('lan-host-1');
+        $(".cmd[data-cmd_id=#id#] .lan-host-img").addClass('lan-#host_type#-1');
+    } else {
+        $(".cmd[data-cmd_id=#id#] .lan-host-img").addClass('lan-host-0');
+        $(".cmd[data-cmd_id=#id#] .lan-host-img").addClass('lan-#host_type#-0');
+    }
 	$(".cmd[data-cmd_id=#id#]").on("click", function() {
 		$('#md_modal').dialog({
 			title: "Parametre de l'équipement Reseau",
