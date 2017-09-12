@@ -14,7 +14,7 @@ Les informations disponibles de votre Freebox Serveur sur Jeedom sont:
  * La place disponible dans vos disques connectés à la Freebox Serveur. 
  * L’état de chaque équipement DHCP 
  * Couper le wifi
- * Redemarrer votre freebox
+ * Redémarrer votre Freebox
 
 '''
 === Installation et Configuration

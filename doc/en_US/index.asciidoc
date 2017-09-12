@@ -14,7 +14,7 @@ The information of your Freebox server on Jeedom are:
  * The available space in your drives connected to the Freebox Server. 
  * Each DHCP equipment State 
  * Switch off the wifi
- * Reboot your freebox
+ * Redémarrer votre Freebox
 
 '''
 === Installation and Settings

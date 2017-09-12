@@ -14,7 +14,7 @@ Die verfügbaren Informationen Ihres Freebox-Server, auf Jeedom:
  * Der verfügbare Platz, der an ihrem Freebox-Server angeschlossenen Festplatten. 
  * Der Zustand jeder DHCP-Ausstattung 
  *  Wi-Fi ausschalten
- * Ihre FreeBox neustarten
+ * Redémarrer votre Freebox
 
 '''
 === Installation und Konfiguration
