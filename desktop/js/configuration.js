@@ -14,7 +14,7 @@ $('.FreeboxAppaire').on('click',function(){
 				if (!data.result.success) {
 					$('#div_alert').showAlert({message: data.result.msg, level: 'danger'});
 					if(data.result.error_code=="new_apps_denied")
-						$('#div_alert').append(".<br>Pour activer l'option il faut se rendre dans : mafreebox.free.fr -> Paramètres de la Freebox -> Gestion des accès <br> Et cocher : <b>Permettre les nouvelles demandes d'associations</b>  -> Appliquer<br>De nouveaux cliquez sur <b>Etape 1</b>");
+						$('#div_alert').append(".<br>Pour activer l'option, il faut se rendre dans : mafreebox.free.fr -> Paramètres de la Freebox -> Gestion des accès <br> Et cocher : <b>Permettre les nouvelles demandes d'associations</b>  -> Appliquer<br>De nouveau, cliquez sur <b>Etape 1</b>");
 					return;
 				}else{
 					sendToBdd(data.result);		
@@ -44,7 +44,7 @@ function AskTrackAuthorization(){
 			} else 	{
 				switch(data.result.result.status){
 					case "unknown":
-						$('#div_alert').showAlert({message: "Tu n'as pas validé à temps l'application, merci re-sauvgarder", level: 'danger'});
+						$('#div_alert').showAlert({message: "Tu n'as pas validé à temps l'application, merci de re-sauvgarder", level: 'danger'});
 						break;
 						
 					case "pending":
@@ -52,7 +52,7 @@ function AskTrackAuthorization(){
 						break;
 						
 					case "timeout":
-						$('#div_alert').showAlert({message: "Tu n'as pas validé à temps l'application, merci re-sauvgarder", level: 'danger'});
+						$('#div_alert').showAlert({message: "Tu n'as pas validé à temps l'application, merci de re-sauvgarder", level: 'danger'});
 						break;
 						
 					case "granted":
@@ -90,8 +90,8 @@ function TryAPI(){
 			   return;
 			}else{
 				//console.log("Test de L'API ... :");
-				var messageOut="L'application est validée et peut etre utilisée. Vous avez fini la configuration.<br>";
-				messageOut+="Toute fois, il faut activer manuellement une option si vous désirer redémarrer la Freebox depuis Jeedom. Il faut vous rendre sur : mafreebox.free.fr <br>";
+				var messageOut="L'application est validée et peut être utilisée. Vous avez fini la configuration.<br>";
+				messageOut+="Toutefois, il faut activer manuellement une option si vous désirez redémarrer la Freebox depuis Jeedom. Il faut vous rendre sur : mafreebox.free.fr <br>";
 				messageOut+="Et suivre les étapes suivantes : Cliquez sur : <b>Paramètres de la Freebox</b> -> <b>Gestion des accès</b><br>";
 				messageOut+="Onglet : <b>Applications</b> -> Puis cliquez sur la fenêtre d'édition sur la droite (A gauche de la poubelle) au nom de votre application Jeedom<br>";
 				messageOut+="Cochez : <b>Modification des réglages de la Freebox</b> et cliquez sur : <b>OK</b>. Vous pouvez fermer le site.";
