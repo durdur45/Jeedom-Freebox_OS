@@ -1,0 +1,118 @@
+#!/bin/bash
+# INSTALLATION
+# Sur votre jeedom
+# - sudo apt install android-tools-adb
+# Sur votre mini4k
+# - paramètres
+# - À propos
+# - Appuyer sur OK 8 fois sur la ligne Build (passage en mode développeur)
+# - paramètres
+# - Options pour les développeurs (Dernière options de la 2ème ligne)
+# - Débogage
+# - Débogage USB
+# - Activé
+# UTILISATION
+# À la première utilisation, une demande d'authorisation va s'afficher sur votre télé. Cocher toujours accepter
+# - Créer un script : 
+# -- "Type script" : Script
+# -- "Type" : - Action
+#             - Message
+# -- "Requête" : /var/www/html/plugins/script/core/ressources/mini4k_cmd IP_DE_VOTRE_MINI4K" #message#
+# Commandes acceptées :
+# - ON
+# - OFF
+# - XX (où XX est le n° de chaîne)
+# - MUTE
+# - VOL+ [X] (X est une valeur facultative comprise entre 1 et 4)
+# - VOL- [X] (X est une valeur facultative comprise entre 1 et 4)
+# - VOL XX (XX est le niveau sonore entre 0 et 100 (?))
+# - PAUSE
+# - PRG+
+# - PRG-
+
+mini4k_ip=$1
+param=$2
+is_valid_cmd=0
+if [[ $param =~ ^[0-9]+$ ]]
+then
+    chaine=($(echo $param |sed  's/\(.\)/\1 /g'))
+
+    cmd="input "
+    for element in "${chaine[@]}"
+    do
+        cmd="$cmd keyevent $(($element + 7)) "
+    done
+    is_valid_cmd=1
+fi
+if [[ $param == "ON" || $param == "OFF" ]]
+then
+    sudo /usr/bin/adb connect $mini4k_ip
+    statut=$(sudo /usr/bin/adb shell dumpsys power -h | grep "Display Power" | sed 's/\.*Display Power: state=\(\w\)/\1/' | tr -d '\r\n')
+    sudo /usr/bin/adb disconnect
+    if [[ $param != $statut ]]
+    then
+        cmd="input keyevent 26"
+        is_valid_cmd=1
+    fi
+fi
+if [[ $param == "MUTE" ]]
+then
+    cmd="input keyevent 164"
+    is_valid_cmd=1
+fi
+
+if [[ $param =~ VOL* ]]
+then
+    
+    if [[ ${param:3:1} == "+" || ${param:3:1} == "-" ]]
+    then
+        step=1
+        if [[  -n $3 && $3 =~ ^[0-9]+$ && $3 -ge 1 && $3 -le 4 ]]
+        then
+            step=$3
+        fi
+        step="${param:3:1}$step"
+        cmd="service call audio 3 i32 $step i32 1"
+        is_valid_cmd=1
+    else
+        vol=10
+        if [[  -n $3 && $3 =~ ^[0-9]+$ ]]
+        then
+            vol=$3
+        fi
+        cmd="service call audio 6 i32 $vol i32 1"
+        is_valid_cmd=1
+    fi
+fi
+
+if [[ $param == "PAUSE" ]]
+then
+    cmd="input keyevent 127"
+    is_valid_cmd=1
+fi
+if [[ $param == "PRG+" ]]
+then
+    cmd="input keyevent 166"
+    is_valid_cmd=1
+fi
+if [[ $param == "PRG-" ]]
+then
+    cmd="input keyevent 167"
+    is_valid_cmd=1
+fi
+
+if [[ $is_valid_cmd -eq 1 ]]
+then
+    ok=1
+    retry=0
+    while [[ $ok -gt 0 && $retry -lt 2 ]]
+    do
+    	sudo /usr/bin/adb connect $mini4k_ip
+    	sudo /usr/bin/adb shell $cmd
+     	ok=$?
+    	sudo /usr/bin/adb disconnect
+      	retry=$(( $retry + 1))
+	
+    done
+fi
+

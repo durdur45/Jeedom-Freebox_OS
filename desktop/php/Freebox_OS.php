@@ -132,7 +132,14 @@ $eqLogics = eqLogic::byType('Freebox_OS');
 					<div class="col-sm-9">
 						<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="FREEBOX_TV_CODE" placeholder="{{Code de la télécommande}}"/>
 					</div>
-				</div>			
+				</div>	
+				<div class="form-group TvParameter">
+					<label class="col-sm-2 control-label" >Mini 4k</label>
+					<div class="col-sm-9">
+						<label>{{Activer}}</label>
+						<input type="checkbox" class="eqLogicAttr " data-label-text="{{Activer}}" data-l1key="configuration" data-l2key="mini4k"/>
+					</div>
+				</div>		
 			</fieldset> 
         </form>
 		<legend>{{Commande}}</legend>
