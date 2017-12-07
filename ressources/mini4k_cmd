@@ -44,58 +44,152 @@ then
     done
     is_valid_cmd=1
 fi
-if [[ $param == "ON" || $param == "OFF" ]]
+if [[ $param == "power" || $param == "OFF" ]]
 then
     sudo /usr/bin/adb connect $mini4k_ip
     statut=$(sudo /usr/bin/adb shell dumpsys power -h | grep "Display Power" | sed 's/\.*Display Power: state=\(\w\)/\1/' | tr -d '\r\n')
     sudo /usr/bin/adb disconnect
-    if [[ $param != $statut ]]
+    if [[ $param != $statut || $param == "power" ]]
     then
         cmd="input keyevent 26"
         is_valid_cmd=1
     fi
 fi
-if [[ $param == "MUTE" ]]
+if [[ $param == "mute" ]]
 then
     cmd="input keyevent 164"
     is_valid_cmd=1
 fi
-
-if [[ $param =~ VOL* ]]
+  
+if [[ $param == "down" ]]
 then
-    
-    if [[ ${param:3:1} == "+" || ${param:3:1} == "-" ]]
-    then
-        step=1
-        if [[  -n $3 && $3 =~ ^[0-9]+$ && $3 -ge 1 && $3 -le 4 ]]
-        then
-            step=$3
-        fi
-        step="${param:3:1}$step"
-        cmd="service call audio 3 i32 $step i32 1"
-        is_valid_cmd=1
-    else
-        vol=10
-        if [[  -n $3 && $3 =~ ^[0-9]+$ ]]
-        then
-            vol=$3
-        fi
-        cmd="service call audio 6 i32 $vol i32 1"
-        is_valid_cmd=1
-    fi
+    cmd="input keyevent 20"
+    is_valid_cmd=1
 fi
 
+if [[ $param == "up" ]]
+then
+    cmd="input keyevent 19"
+    is_valid_cmd=1
+fi
+
+if [[ $param == "left" ]]
+then
+    cmd="input keyevent 21"
+    is_valid_cmd=1
+fi
+
+if [[ $param == "right" ]]
+then
+    cmd="input keyevent 22"
+    is_valid_cmd=1
+fi
+if [[ $param == "red" ]]
+then
+    cmd="input keyevent 183"
+    is_valid_cmd=1
+fi
+if [[ $param == "green" ]]
+then
+    cmd="input keyevent 184"
+    is_valid_cmd=1
+fi
+if [[ $param == "yellow" ]]
+then
+    cmd="input keyevent 185"
+    is_valid_cmd=1
+fi
+if [[ $param == "blue" ]]
+then
+    cmd="input keyevent 186"
+    is_valid_cmd=1
+fi
+if [[ $param == "home" ]]
+then
+    cmd="input keyevent 3"
+    is_valid_cmd=1
+fi
+if [[ $param == "rec" ]]
+then
+    cmd="input keyevent 130"
+    is_valid_cmd=1
+fi
+if [[ $param == "bwd" ]]
+then
+    cmd="input keyevent 275"
+    is_valid_cmd=1
+fi
+if [[ $param == "prev" ]]
+then
+    cmd="input keyevent 88"
+    is_valid_cmd=1
+fi
+if [[ $param == "play" ]]
+then
+    cmd="input keyevent 126"
+    is_valid_cmd=1
+fi
+if [[ $param == "fwd" ]]
+then
+    cmd="input keyevent 90"
+    is_valid_cmd=1
+fi
+if [[ $param == "next" ]]
+then
+    cmd="input keyevent 87"
+    is_valid_cmd=1
+fi  
+if [[ $param == "ok" ]]
+then
+    cmd="input keyevent 66"
+    is_valid_cmd=1
+fi  
+#if [[ $param =~ vol_* ]]
+#then
+    
+#    if [[ ${param:3:1} == "inc" || ${param:3:1} == "dec" ]]
+#    then
+#        step=1
+#        if [[  -n $3 && $3 =~ ^[0-9]+$ && $3 -ge 1 && $3 -le 4 ]]
+#        then
+#            step=$3
+#        fi
+#        step="${param:3:1}$step"
+#        cmd="service call audio 3 i32 $step i32 1"
+#        is_valid_cmd=1
+#    else
+#        vol=10
+#        if [[  -n $3 && $3 =~ ^[0-9]+$ ]]
+#        then
+#            vol=$3
+#        fi
+#        cmd="service call audio 6 i32 $vol i32 1"
+#        is_valid_cmd=1
+#    fi
+#fi
+
+if [[ $param == "vol_inc" ]]
+then
+    cmd="input keyevent 24"
+    is_valid_cmd=1
+fi  
+if [[ $param == "vol_dec" ]]
+then
+    cmd="input keyevent 25"
+    is_valid_cmd=1
+fi 
+  
 if [[ $param == "PAUSE" ]]
 then
     cmd="input keyevent 127"
     is_valid_cmd=1
 fi
-if [[ $param == "PRG+" ]]
+if [[ $param == "prgm_inc" ]]
 then
     cmd="input keyevent 166"
     is_valid_cmd=1
 fi
-if [[ $param == "PRG-" ]]
+if [[ $param == "prgm_dec" ]]
 then
     cmd="input keyevent 167"
     is_valid_cmd=1
@@ -115,4 +209,3 @@ then
 	
     done
 fi
-
