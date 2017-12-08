@@ -19,16 +19,7 @@
 #             - Message
 # -- "Requête" : /var/www/html/plugins/script/core/ressources/mini4k_cmd IP_DE_VOTRE_MINI4K" #message#
 # Commandes acceptées :
-# - ON
-# - OFF
-# - XX (où XX est le n° de chaîne)
-# - MUTE
-# - VOL+ [X] (X est une valeur facultative comprise entre 1 et 4)
-# - VOL- [X] (X est une valeur facultative comprise entre 1 et 4)
-# - VOL XX (XX est le niveau sonore entre 0 et 100 (?))
-# - PAUSE
-# - PRG+
-# - PRG-
+# - Logical ID
 
 mini4k_ip=$1
 param=$2
@@ -106,7 +97,7 @@ then
 fi
 if [[ $param == "home" ]]
 then
-    cmd="input keyevent 3"
+    cmd="input keyevent 170"
     is_valid_cmd=1
 fi
 if [[ $param == "rec" ]]
@@ -121,12 +112,12 @@ then
 fi
 if [[ $param == "prev" ]]
 then
-    cmd="input keyevent 88"
+    cmd="input keyevent 89"
     is_valid_cmd=1
 fi
 if [[ $param == "play" ]]
 then
-    cmd="input keyevent 126"
+    cmd="input keyevent 85"
     is_valid_cmd=1
 fi
 if [[ $param == "fwd" ]]
@@ -136,37 +127,14 @@ then
 fi
 if [[ $param == "next" ]]
 then
-    cmd="input keyevent 87"
+    cmd="input keyevent 90"
     is_valid_cmd=1
 fi  
 if [[ $param == "ok" ]]
 then
-    cmd="input keyevent 66"
+    cmd="input keyevent 23"
     is_valid_cmd=1
 fi  
-#if [[ $param =~ vol_* ]]
-#then
-    
-#    if [[ ${param:3:1} == "inc" || ${param:3:1} == "dec" ]]
-#    then
-#        step=1
-#        if [[  -n $3 && $3 =~ ^[0-9]+$ && $3 -ge 1 && $3 -le 4 ]]
-#        then
-#            step=$3
-#        fi
-#        step="${param:3:1}$step"
-#        cmd="service call audio 3 i32 $step i32 1"
-#        is_valid_cmd=1
-#    else
-#        vol=10
-#        if [[  -n $3 && $3 =~ ^[0-9]+$ ]]
-#        then
-#            vol=$3
-#        fi
-#        cmd="service call audio 6 i32 $vol i32 1"
-#        is_valid_cmd=1
-#    fi
-#fi
 
 if [[ $param == "vol_inc" ]]
 then
@@ -178,12 +146,7 @@ then
     cmd="input keyevent 25"
     is_valid_cmd=1
 fi 
-  
-if [[ $param == "PAUSE" ]]
-then
-    cmd="input keyevent 127"
-    is_valid_cmd=1
-fi
+
 if [[ $param == "prgm_inc" ]]
 then
     cmd="input keyevent 166"
