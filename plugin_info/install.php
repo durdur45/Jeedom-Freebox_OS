@@ -4,7 +4,8 @@ function Freebox_OS_install() {
 	Freebox_OS::CreateArchi();
 }
 function Freebox_OS_update() {
-	Freebox_OS::CreateArchi();    
+	Freebox_OS::CreateArchi(); 
+	exec("sudo chmod 755 /var/www/html/plugins/Freebox_OS/ressources/mini4k_cmd");
 }
 function Freebox_OS_remove() {
 }
