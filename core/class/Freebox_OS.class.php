@@ -911,15 +911,19 @@ class Freebox_OSCmd extends cmd {
 						log::add('Freebox_OS','debug','Etat du player freebox '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$return);
 					break;
 					case 'power':
-						if($this->getEqLogic()->getConfiguration('mini4k'))
+						if($this->getEqLogic()->getConfiguration('mini4k')) {
 							$result=exec('sudo '.dirname(__FILE__) .'/../../ressources/mini4k_cmd '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$this->getLogicalId());
+							log::add('Freebox_OS','debug', 'Mini 4K : sudo '.dirname(__FILE__) .'/../../ressources/mini4k_cmd '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$this->getLogicalId());
+						}
 						else
 							$result=$this->getEqLogic()->send_cmd_fbxtv($this->getLogicalId());
 						 $this->getEqLogic()->getCmd('info','powerstat')->execute();
 					break;
 					default:
-						if($this->getEqLogic()->getConfiguration('mini4k'))
+						if($this->getEqLogic()->getConfiguration('mini4k')) {
 							$result=exec('sudo '.dirname(__FILE__) .'/../../ressources/mini4k_cmd '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$this->getLogicalId());
+							log::add('Freebox_OS','debug', 'Mini 4K : sudo '.dirname(__FILE__) .'/../../ressources/mini4k_cmd '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$this->getLogicalId());
+						}
 						else
 							$result=$this->getEqLogic()->send_cmd_fbxtv($this->getLogicalId());
 					break;
