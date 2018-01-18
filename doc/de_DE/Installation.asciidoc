@@ -2,7 +2,7 @@ Une fois le plugin installé et activé, nous devons procéder à un appairage d
 
 image::../images/Freebox_OS_screenshot_configuration.jpg[]
 
-Sur la page de configuration, vous avez la possibilité de personnaliser les options de connexion, mais seules celles par défaut ont été validées.
+Auf der Konfigurationsseite haben Sie die Möglichkeit, die Verbindungsoptionen anzupassen, aber nur die Standardmäßig bestätigt wurden.
 
 ==== Appairage
 Pour cela, il suffit de cliquer sur le bouton "Appairer" dans votre interface de configuration.
