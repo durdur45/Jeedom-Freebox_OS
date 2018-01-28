@@ -6,7 +6,7 @@ Sur la page de configuration, vous avez la possibilité de personnaliser les opt
 
 ==== Appairage
 Pour cela, il suffit de cliquer sur le bouton "Appairer" dans votre interface de configuration.
-At this time, you'll get a message like this.
+Vous allez à ce moment avoir un message comme ceci.
 Ne validez surtout pas maintenant, attendez les étapes suivantes.
 
 image::../images/MessageValidation.jpg[]
