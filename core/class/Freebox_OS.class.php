@@ -905,7 +905,7 @@ class Freebox_OSCmd extends cmd {
                             $return = 0;
                         }
 					} else {
-						$return=false;
+						$return=0;
 					}
 				}
 			break;

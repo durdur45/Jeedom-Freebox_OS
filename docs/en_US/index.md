@@ -1,23 +1,23 @@
 == FreeboxOS
 
 === Description
-This plugin allows to retrieve information from your freeboxOS (Server Freebox Revolution or 4K).
+Ce plugin permet de récupérer les informations de votre freeboxOS (Serveur Freebox Revolution ou 4K).
 
-The information of your Freebox server on Jeedom are:
+Les informations disponibles de votre Freebox Serveur sur Jeedom sont:
 
- * System information
- * The number of absences
- * The number of calls made
- * The number of calls received
- * Internet rates
- * The status of your connection
- * The available space in your drives connected to the Freebox Server. 
- * Each DHCP equipment State 
- * Switch off the wifi
+ * Les informations système
+ * Le nombre d'appels en absences
+ * Le nombre d'appels passés
+ * Le nombre d'appels reçus
+ * Les débits internet
+ * L'état de votre connexion
+ * La place disponible dans vos disques connectés à la Freebox Serveur. 
+ * L’état de chaque équipement DHCP 
+ * Couper le wifi
  * Redémarrer votre Freebox
 
 '''
-=== Installation and Settings
+=== Installation et Configuration
 include::Installation.asciidoc[]
 
 '''
