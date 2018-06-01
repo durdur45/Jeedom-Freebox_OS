@@ -912,7 +912,7 @@ class Freebox_OSCmd extends cmd {
 			case'FreeboxTv':
 				switch($this->getLogicalId()){
 					case 'powerstat':
-						$return=exec('sudo nc -zv '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' 7000 2>&1 | grep -E "open|succeeded" | wc -l');
+						$return=exec('nc -zv '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' 7000 2>&1 | grep -E "open|succeeded" | wc -l');
 						log::add('Freebox_OS','debug','Etat du player freebox '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$return);
 					break;
 					case 'power':

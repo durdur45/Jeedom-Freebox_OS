@@ -6,6 +6,7 @@
 	"author" : "Halbout Michael",
 	"require" : "3.0",
 	"category" : "multimedia",
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"hasOwnDeamon" : true,
 	"hasDependency" : true,
 	"issue" : "https://github.com/mika-nt28/Jeedom-Freebox_OS/issues",
