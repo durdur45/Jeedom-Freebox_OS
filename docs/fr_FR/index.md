@@ -24,6 +24,14 @@ Une fois le plugin installé et activé, nous devons procéder à un appairage d
 
 Sur la page de configuration, vous avez la possibilité de personnaliser les options de connexion, mais seules celles par défaut ont été validées.
 
+- Pause dans la boucle du demon (s): Permet de determiner la récurence de mise a jours des informations remonté depuis la Freebox
+- IP Freebox: Adresse de connexion de la freebox (par defaut : mafreebox.free.fr)
+- Id de l'application Freebox serveur: Identifiant utilisé par la freebox (par defaut : fr.freebox.jeedom)
+- Nom de l'application Freebox serveur: Nom utilisé par la freebox (par defaut : Freebox OS For Jeedom)
+- Version de l'application Freebox serveur: Version de l'application utilisé par la freebox  (par defaut : v1.0.0)
+- Nom de l'équipement connecté: Nom de l'équipement utilisé par la freebox  (par defaut : Jeedom Core)
+L'appairage doit etre lancé après une sauvegarde des parametres pour leurs prises en compte.
+
 Appairage
 =========
 Pour cela, il suffit de cliquer sur le bouton "Appairer" dans votre interface de configuration.
