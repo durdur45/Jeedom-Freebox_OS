@@ -11,5 +11,5 @@
 	"hasDependency" : true,
 	"issue" : "https://github.com/mika-nt28/Jeedom-Freebox_OS/issues",
  	"changelog" : "https://github.com/mika-nt28/Jeedom-Freebox_OS/commits/master",
- 	"documentation" : "https://jeedom.github.io/documentation/third_plugin/Freebox_OS/fr_FR/index.html"
+ 	"documentation" : "http://mika-nt28.github.io/Jeedom-Freebox_OS/"
 }
