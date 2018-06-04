@@ -37,7 +37,7 @@ Validation sur la Freebox
 Vous avez donc demandé a votre Freebox une nouvelle connexion par l'api, et il faut l'autoriser.
 Pour cela, rien de plus simple, il vous faut donc aller valider cette connexion directement sur votre Freebox en appuyant sur la flèche de droite pour répondre "oui"
 
-![introduction01](../images/EcranFreebox.jpg)
+![introduction01](../images/EcranFreebox.jpeg)
 
 Validation Jeedom
 -----------------
