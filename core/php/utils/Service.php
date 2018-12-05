@@ -1,6 +1,7 @@
 <?php
 namespace alphayax\freebox\utils;
 use alphayax\freebox\utils;
+use GuzzleHttp\Client;
 
 /**
  * Class freebox_service
@@ -21,9 +22,31 @@ abstract class Service {
     /**
      * @param $service
      * @return \alphayax\freebox\utils\rest\Rest
+     * @deprecated
      */
     protected function getService( $service){
         return new utils\rest\Rest( $this->application->getFreeboxApiHost() . $service);
     }
 
+    /**
+     * @param       $verb
+     * @param       $service
+     * @param       $params
+     * @return \alphayax\freebox\utils\FreeboxResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function callService($verb, $service, $params = null)
+    {
+        $client = new Client();
+
+        $options_x = [];
+
+        if( null != $params){
+            $options_x['json'] = $params;
+        }
+
+        $response = $client->request($verb, $this->application->getFreeboxApiHost() . $service, $options_x);
+
+        return new FreeboxResponse( $response);
+    }
 }
