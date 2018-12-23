@@ -258,8 +258,9 @@ class Freebox_OS extends eqLogic {
 			$this->setLogicalId('FreeboxTv');
 	}
 	public static function RefreshInformation() {
+		$FreeboxAPI = new FreeboxAPI();
 		while(true){
-			if(self::open_session()===false)
+			if($FreeboxAPI->open_session()===false)
 				break;
 			foreach(eqLogic::byType('Freebox_OS') as $Equipement){
 				if($Equipement->getIsEnable()){
@@ -268,7 +269,7 @@ class Freebox_OS extends eqLogic {
 					}
 				}
 			}
-			self::close_session();
+			$FreeboxAPI->close_session();
 			sleep(config::byKey('DemonSleep','Freebox_OS'));
 		}
 		self::deamon_stop();
