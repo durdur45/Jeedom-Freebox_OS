@@ -1,7 +1,7 @@
 <?php
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-include_file('core', 'FreeboxApi', 'class', 'Freebox_OS');
+include_file('core', 'FreeboxAPI', 'class', 'Freebox_OS');
 class Freebox_OS extends eqLogic {	
 	public static $_widgetPossibility = array('custom' => array(
 	        'visibility' => true,
