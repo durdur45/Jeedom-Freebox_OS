@@ -26,6 +26,11 @@ class Freebox_OS extends eqLogic {
 			$return['state'] = 'ok';
 		else 
 			$return['state'] = 'nok';
+		$cron = cron::byClassAndFunction('Freebox_OS', 'WebSocketInformation');
+		if(is_object($cron) && $cron->running() && is_object($cache) && $cache->getValue('')!='')
+			$return['state'] = 'ok';
+		else 
+			$return['state'] = 'nok';
 		return $return;
 	}
 	public static function deamon_start($_debug = false) {
@@ -49,8 +54,26 @@ class Freebox_OS extends eqLogic {
 		}
 		$cron->start();
 		$cron->run();
+		$cron = cron::byClassAndFunction('Freebox_OS', 'WebSocketInformation');
+		if (!is_object($cron)) {
+			$cron = new cron();
+			$cron->setClass('Freebox_OS');
+			$cron->setFunction('WebSocketInformation');
+			$cron->setEnable(1);
+			$cron->setDeamon(1);
+			$cron->setSchedule('* * * * *');
+			$cron->setTimeout('999999');
+			$cron->save();
+		}
+		$cron->start();
+		$cron->run();
 	}
 	public static function deamon_stop() {
+		$cron = cron::byClassAndFunction('Freebox_OS', 'WebSocketInformation');
+		if (is_object($cron)) {
+			$cron->stop();
+			$cron->remove();
+		}
 		$cron = cron::byClassAndFunction('Freebox_OS', 'RefreshInformation');
 		if (is_object($cron)) {
 			$cron->stop();
@@ -256,6 +279,26 @@ class Freebox_OS extends eqLogic {
 		}
 		if($this->getLogicalId()=='')
 			$this->setLogicalId('FreeboxTv');
+	}
+	public static function WebSocketInformation() {
+		$host = trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
+		$port = 80;
+		// create socket
+		$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
+		// connect to server
+		$result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");  
+		// send string to server
+		//socket_write($socket, $message, strlen($message)) or die("Could not send data to server\n");
+		$session_token = cache::byKey('Freebox_OS::SessionToken');
+		$message=array("X-Fbx-App-Auth: $session_token->getValue('')");
+		socket_write($socket, $message, strlen($message)) or die("Could not send data to server\n");
+		while (true) { 
+			$result = socket_read ($socket, 1024) or die("Could not read server response\n");
+			log::add('Freebox_OS_socket','info',$result);
+			sleep(1); 
+		} 
+		// Close the master sockets 
+		socket_close($socket); 
 	}
 	public static function RefreshInformation() {
 		$FreeboxAPI = new FreeboxAPI();
