@@ -281,21 +281,18 @@ class Freebox_OS extends eqLogic {
 			$this->setLogicalId('FreeboxTv');
 	}
 	public static function WebSocketInformation() {
-		$host = trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
-		$port = 80;
-		// create socket
+        	$port = getservbyname('www', 'tcp');
+        	$host = gethostbyname(trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS')));
 		$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
-		// connect to server
 		$result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");  
 		// send string to server
-		//socket_write($socket, $message, strlen($message)) or die("Could not send data to server\n");
 		$session_token = cache::byKey('Freebox_OS::SessionToken');
-		$message=array("X-Fbx-App-Auth: $session_token->getValue('')");
+		$message = "X-Fbx-App-Auth: " . $session_token->getValue('');
 		socket_write($socket, $message, strlen($message)) or die("Could not send data to server\n");
 		while (true) { 
-			$result = socket_read ($socket, 1024) or die("Could not read server response\n");
-			log::add('Freebox_OS_socket','info',$result);
-			sleep(1); 
+			if (false !== ($bytes = socket_recv($socket, $result, 1024, MSG_WAITALL))) 
+              			log::add('Freebox_OS','debug',"[WebSocket]".$result);
+			sleep(10); 
 		} 
 		// Close the master sockets 
 		socket_close($socket); 
