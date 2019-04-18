@@ -276,7 +276,7 @@ class FreeboxAPI{
 			else
 				return false;
 	}
-	public function getTile(){
+	public function getTiles(){
 			self::open_session();
 			$listEquipement = self::fetch('/api/v6/home/tileset/all');
 			self::close_session();
