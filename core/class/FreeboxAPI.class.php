@@ -276,6 +276,31 @@ class FreeboxAPI{
 			else
 				return false;
 	}
+	public function getTiles(){
+			self::open_session();
+			$listEquipement = self::fetch('/api/v6/home/tileset/all');
+			self::close_session();
+			if($listEquipement['success']){
+				//$HomeAdapters=Freebox_OS::AddEqLogic('Tile','Tile');
+				foreach($listEquipement['result'] as $Equipements){
+					$Tile=Freebox_OS::AddEqLogic('Tile','Tile');
+					foreach($Equipements['data'] as $Equipement){
+						if($Equipement['label']!=''){
+							$Commande=Freebox_OS::AddCommande($Tile,$Equipement['label'],$Equipement['ep_id'],"info",'binary');
+							$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);
+						}
+					}
+				}
+			}
+			return true;
+	}
+	public function getTile($id=''){
+			$Status = self::fetch('/api/v6/home/tileset/'.$id);
+			if($Status['success'])
+				return $Status['result'];
+			else
+				return false;
+	}
 	
 	public function getHomeAdapters(){
 			self::open_session();
@@ -288,7 +313,7 @@ class FreeboxAPI{
 					if($Equipement['label']!='')
 					{
 						$Commande=Freebox_OS::AddCommande($HomeAdapters,$Equipement['label'],$Equipement['id'],"info",'binary');
-						$Equipement->checkAndUpdateCmd($Equipement['id'],$Equipement['status']);
+						$HomeAdapters->checkAndUpdateCmd($Equipement['id'],$Equipement['status']);
 					}
 				}
 			}

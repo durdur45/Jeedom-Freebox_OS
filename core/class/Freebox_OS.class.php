@@ -177,6 +177,7 @@ class Freebox_OS extends eqLogic {
 			$FreeboxAPI->nb_appel_absence();
 			$FreeboxAPI->freeboxPlayerPing();
 			$FreeboxAPI->getHomeAdapters();
+			$FreeboxAPI->getTiles();
 			$FreeboxAPI->DownloadStats();
 		}
     	}
@@ -560,6 +561,12 @@ class Freebox_OSCmd extends cmd {
 					case "airmediastop":
 						$return = $FreeboxAPI->AirMediaAction($receiver,"stop",$_options['titre'],$_options['message']);
 					break;
+				}
+			break;
+			default:
+				$result=$FreeboxAPI->getTile($this->getLogicalId());
+				if($result!=false){
+					$this->getEqLogic()->checkAndUpdateCmd($this->getLogicalId(),$result);
 				}
 			break;
 		}		
