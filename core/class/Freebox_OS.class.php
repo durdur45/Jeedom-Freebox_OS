@@ -562,6 +562,12 @@ class Freebox_OSCmd extends cmd {
 					break;
 				}
 			break;
+			default:
+				$result=$FreeboxAPI->getTile($this->getLogicalId());
+				if($result!=false){
+					$this->getEqLogic()->checkAndUpdateCmd($this->getLogicalId(),$result);
+				}
+			break;
 		}		
 		if (isset($return) && $this->execCmd() != $return){
 			$this->setCollectDate(date('Y-m-d H:i:s'));
