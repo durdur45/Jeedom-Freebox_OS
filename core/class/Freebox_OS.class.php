@@ -177,6 +177,7 @@ class Freebox_OS extends eqLogic {
 			$FreeboxAPI->nb_appel_absence();
 			$FreeboxAPI->freeboxPlayerPing();
 			$FreeboxAPI->getHomeAdapters();
+			$FreeboxAPI->getTiles();
 			$FreeboxAPI->DownloadStats();
 		}
     	}
