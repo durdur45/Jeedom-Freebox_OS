@@ -1,27 +1,31 @@
 <?php
 try {
 	require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+	include_file('core', 'FreeboxAPI', 'class', 'Freebox_OS');
 	include_file('core', 'authentification', 'php');
-	
 	if (!isConnect('admin')) {
 		throw new Exception(__('401 - Accès non autorisé', __FILE__));
 	}	
+	$FreeboxAPI= new FreeboxAPI();
 	if (init('action') == 'sendToBdd') 	{
 		config::save('FREEBOX_SERVER_TRACK_ID', init('track_id'),'Freebox_OS');
 		config::save('FREEBOX_SERVER_APP_TOKEN', init('app_token'),'Freebox_OS');
 		ajax::success(true);
 	}
-	if (init('action') == 'connect') 	{
-		ajax::success(Freebox_OS::track_id());
+	if (init('action') == 'connect') {
+		ajax::success($FreeboxAPI->track_id());
 	}	
 	if (init('action') == 'ask_track_authorization') 	{
-		ajax::success(Freebox_OS::ask_track_authorization());
+		ajax::success($FreeboxAPI->ask_track_authorization());
+	}
+	if (init('action') == 'SearchHomeAdapters') 	{
+		ajax::success($FreeboxAPI->getHomeAdapters());
 	}
 	if (init('action') == 'SearchReseau') 	{
-		ajax::success(Freebox_OS::freeboxPlayerPing());
+		ajax::success($FreeboxAPI->freeboxPlayerPing());
 	}
 	if (init('action') == 'SearchDisque') 	{
-		ajax::success(Freebox_OS::disques());
+		ajax::success($FreeboxAPI->disques());
 	}
 	if (init('action') == 'AddPortForwarding')	{
 		$PortForwarding=array(
@@ -42,7 +46,7 @@ try {
 		$Commande=cmd::byId(init('id'));
 		if(is_object($Commande)){
 			$Mac=str_replace ('ether-','',$Commande->getLogicalId());
-			ajax::success(Freebox_OS::WakeOnLAN($Mac));
+			ajax::success($FreeboxAPI->WakeOnLAN($Mac));
 		}
 		ajax::success(false);
 	}	
@@ -56,7 +60,7 @@ try {
 	ajax::success(false);
 	}
 	if (init('action') == 'getAirMediaRecivers')	{
-		ajax::success(Freebox_OS::airmediaReceivers());
+		ajax::success($FreeboxAPI->airmediaReceivers());
 	}
 	if (init('action') == 'setAirMediaReciver')	{
 		$cmd=cmd::byId(init('id'));
