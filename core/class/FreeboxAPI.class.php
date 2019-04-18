@@ -276,6 +276,31 @@ class FreeboxAPI{
 			else
 				return false;
 	}
+	
+	public function getHomeAdapters(){
+			self::open_session();
+			$listEquipement = self::fetch('/api/v6/home/adapters');
+			self::close_session();
+			if($listEquipement['success']){
+				$HomeAdapters=Freebox_OS::AddEqLogic('Home Adapters','HomeAdapters');
+				foreach($listEquipement['result'] as $Equipement)
+				{
+					if($Equipement['label']!='')
+					{
+						$Commande=Freebox_OS::AddCommande($HomeAdapters,$Equipement['label'],$Equipement['id'],"info",'binary');
+						$Equipement->checkAndUpdateCmd($Equipement['id'],$Equipement['status']);
+					}
+				}
+			}
+			return true;
+	}
+	public function getHomeAdapterStatus($id=''){
+			$Status = self::fetch('/api/v6/home/adapters/'.$id);
+			if($Status['success'])
+				return $Status['result'];
+			else
+				return false;
+	}
 	public function freeboxPlayerPing(){
 			self::open_session();
 			$listEquipement = self::fetch('/api/v3/lan/browser/pub/');
