@@ -26,11 +26,6 @@ class Freebox_OS extends eqLogic {
 			$return['state'] = 'ok';
 		else 
 			$return['state'] = 'nok';
-		$cron = cron::byClassAndFunction('Freebox_OS', 'WebSocketInformation');
-		if(is_object($cron) && $cron->running() && is_object($cache) && $cache->getValue('')!='')
-			$return['state'] = 'ok';
-		else 
-			$return['state'] = 'nok';
 		return $return;
 	}
 	public static function deamon_start($_debug = false) {
@@ -54,26 +49,8 @@ class Freebox_OS extends eqLogic {
 		}
 		$cron->start();
 		$cron->run();
-		$cron = cron::byClassAndFunction('Freebox_OS', 'WebSocketInformation');
-		if (!is_object($cron)) {
-			$cron = new cron();
-			$cron->setClass('Freebox_OS');
-			$cron->setFunction('WebSocketInformation');
-			$cron->setEnable(1);
-			$cron->setDeamon(1);
-			$cron->setSchedule('* * * * *');
-			$cron->setTimeout('999999');
-			$cron->save();
-		}
-		$cron->start();
-		$cron->run();
 	}
 	public static function deamon_stop() {
-		$cron = cron::byClassAndFunction('Freebox_OS', 'WebSocketInformation');
-		if (is_object($cron)) {
-			$cron->stop();
-			$cron->remove();
-		}
 		$cron = cron::byClassAndFunction('Freebox_OS', 'RefreshInformation');
 		if (is_object($cron)) {
 			$cron->stop();
@@ -122,7 +99,8 @@ class Freebox_OS extends eqLogic {
 		return $Commande;
 	}
 	public static function CreateArchi() {
-		Freebox_OS::AddEqLogic('Réseau','Reseau');
+		self::AddEqLogic('Home Adapters','HomeAdapters');
+		self::AddEqLogic('Réseau','Reseau');
 		self::AddEqLogic('Disque Dur','Disque');
 		// ADSL
 		$ADSL=self::AddEqLogic('ADSL','ADSL');
@@ -191,15 +169,17 @@ class Freebox_OS extends eqLogic {
 		log::add('Freebox_OS','debug',config::byKey('FREEBOX_SERVER_TRACK_ID'));
 		if(config::byKey('FREEBOX_SERVER_TRACK_ID')!='')
 		{
-			self::disques();
-			self::wifi();
-			self::system();
-			self::adslStats();
-			self::nb_appel_absence();
-			self::freeboxPlayerPing();
-			self::DownloadStats();
+			$FreeboxAPI= new FreeboxAPI();
+			$FreeboxAPI->disques();
+			$FreeboxAPI->wifi();
+			$FreeboxAPI->system();
+			$FreeboxAPI->adslStats();
+			$FreeboxAPI->nb_appel_absence();
+			$FreeboxAPI->freeboxPlayerPing();
+			$FreeboxAPI->getHomeAdapters();
+			$FreeboxAPI->DownloadStats();
 		}
-    }
+    	}
 	public function toHtml($_version = 'mobile') {
 		$replace = $this->preToHtml($_version);
 		if (!is_array($replace)) {
@@ -279,23 +259,6 @@ class Freebox_OS extends eqLogic {
 		}
 		if($this->getLogicalId()=='')
 			$this->setLogicalId('FreeboxTv');
-	}
-	public static function WebSocketInformation() {
-        	$port = getservbyname('www', 'tcp');
-        	$host = gethostbyname(trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS')));
-		$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
-		$result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");  
-		// send string to server
-		$session_token = cache::byKey('Freebox_OS::SessionToken');
-		$message = "X-Fbx-App-Auth: " . $session_token->getValue('');
-		socket_write($socket, $message, strlen($message)) or die("Could not send data to server\n");
-		while (true) { 
-			if (false !== ($bytes = socket_recv($socket, $result, 1024, MSG_WAITALL))) 
-              			log::add('Freebox_OS','debug',"[WebSocket]".$result);
-			sleep(10); 
-		} 
-		// Close the master sockets 
-		socket_close($socket); 
 	}
 	public static function RefreshInformation() {
 		$FreeboxAPI = new FreeboxAPI();
@@ -541,17 +504,23 @@ class Freebox_OSCmd extends cmd {
 					$this->save();
 					if (isset($result['active'])) {
 						if ($result['active'] == 'true') {
-                            $this->setOrder($this->getOrder() % 1000);
-                            $this->save();
-                            $return = 1;
-                        } else {
-                            $this->setOrder($this->getOrder() % 1000 + 1000);
-                            $this->save();
-                            $return = 0;
-                        }
+						    $this->setOrder($this->getOrder() % 1000);
+						    $this->save();
+						    $return = 1;
+						} else {
+						    $this->setOrder($this->getOrder() % 1000 + 1000);
+						    $this->save();
+						    $return = 0;
+						}
 					} else {
 						$return=0;
 					}
+				}
+			break;
+			case'HomeAdapters':
+				$result=$FreeboxAPI->getHomeAdapterStatus($this->getLogicalId());
+				if($result!=false){
+					$this->getEqLogic()->checkAndUpdateCmd($this->getLogicalId(),$result);
 				}
 			break;
 			case'FreeboxTv':
