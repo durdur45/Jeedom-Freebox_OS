@@ -286,8 +286,30 @@ class FreeboxAPI{
 					$Tile=Freebox_OS::AddEqLogic('Tile','Tile');
 					foreach($Equipements['data'] as $Equipement){
 						if($Equipement['label']!=''){
-							$Commande=Freebox_OS::AddCommande($Tile,$Equipement['label'],$Equipement['ep_id'],"info",'binary');
-							$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);
+							swich($Equipement['ui']['display']){
+								case "button":
+									foreach(str_split($Equipement['ui']['access']) as $access){
+										if($access = "r"){
+											$Commande=$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
+											$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);
+										}
+										if($access = "w"){
+											$Type= "action";
+											$SousType= 'other';
+											$Commande=$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
+										}
+									}
+								break;
+								case "slider":
+									$Type= "action";
+									$SousType= 'slider';
+								break;
+								default:
+									$Type= "info";
+									$SousType= 'binary';
+								break;
+								
+							}
 						}
 					}
 				}
@@ -312,7 +334,7 @@ class FreeboxAPI{
 				{
 					if($Equipement['label']!='')
 					{
-						$Commande=Freebox_OS::AddCommande($HomeAdapters,$Equipement['label'],$Equipement['id'],"info",'binary');
+						$Commande=$HomeAdapters->AddCommande($Equipement['label'],$Equipement['id'],"info",'binary');
 						$HomeAdapters->checkAndUpdateCmd($Equipement['id'],$Equipement['status']);
 					}
 				}
@@ -336,7 +358,7 @@ class FreeboxAPI{
 				{
 					if($Equipement['primary_name']!='')
 					{
-						$Commande=Freebox_OS::AddCommande($Reseau,$Equipement['primary_name'],$Equipement['id'],"info",'binary','Freebox_OS_Reseau');
+						$Commande=$Reseau->AddCommande($Equipement['primary_name'],$Equipement['id'],"info",'binary','Freebox_OS_Reseau');
 						$Commande->setConfiguration('host_type',$Equipement['host_type']);
 						if (isset($result['l3connectivities']))
 						{
