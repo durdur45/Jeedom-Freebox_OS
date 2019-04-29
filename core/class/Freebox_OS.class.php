@@ -521,7 +521,7 @@ class Freebox_OSCmd extends cmd {
 			case'HomeAdapters':
 				$result=$FreeboxAPI->getHomeAdapterStatus($this->getLogicalId());
 				if($result!=false){
-					$this->getEqLogic()->checkAndUpdateCmd($this->getLogicalId(),$result);
+					$this->getEqLogic()->checkAndUpdateCmd($this->getLogicalId(),$result['status']);
 				}
 			break;
 			case'FreeboxTv':
