@@ -566,7 +566,7 @@ class Freebox_OSCmd extends cmd {
 			default:
 				$result=$FreeboxAPI->getTile($this->getLogicalId());
 				if($result!=false){
-					$this->getEqLogic()->checkAndUpdateCmd($this->getLogicalId(),$result);
+					$this->getEqLogic()->checkAndUpdateCmd($this->getLogicalId(),$result['value']);
 				}
 			break;
 		}		
