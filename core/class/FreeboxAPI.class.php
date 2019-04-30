@@ -286,10 +286,12 @@ class FreeboxAPI{
 					$Tile=Freebox_OS::AddEqLogic('Tile','Tile');
 					foreach($Equipements['data'] as $Equipement){
 						if($Equipement['label']!=''){
-							swich($Equipement['ui']['display']){
+							switch($Equipement['ui']['display']){
 								case "button":
 									foreach(str_split($Equipement['ui']['access']) as $access){
 										if($access = "r"){
+											$Type= "info";
+											$SousType= 'binary';
 											$Commande=$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
 											$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);
 										}
