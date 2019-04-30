@@ -74,7 +74,7 @@ class Freebox_OS extends eqLogic {
 		return $EqLogic;
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary', $Template='', $unite='') {
-		$Commande = $eqLogic->getCmd(null,$_logicalId);
+		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
 		{
 			$VerifName=$Name;
