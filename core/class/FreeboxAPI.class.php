@@ -179,7 +179,7 @@ class FreeboxAPI{
 				$used_bytes=$Disques['partitions'][0]['used_bytes'];
 				$value=round($used_bytes/$total_bytes*100,2);
 				log::add('Freebox_OS','debug','Occupation ['.$Disques['type'].'] - '.$Disques['id'].': '. $used_bytes.'/'.$total_bytes.' => '.$value.'%');
-				$Disque=self::AddEqLogic('Disque Dur','Disque');
+				$Disque=Freebox_OS::AddEqLogic('Disque Dur','Disque');
 				$commande=self::AddCommande($Disque,'Occupation ['.$Disques['type'].'] - '.$Disques['id'],$Disques['id'],"info",'numeric','Freebox_OS_Disque','%');
 				$commande->setCollectDate(date('Y-m-d H:i:s'));
 				$commande->setConfiguration('doNotRepeatEvent', 1);
@@ -247,7 +247,7 @@ class FreeboxAPI{
 	}	
 	public function UpdateSystem() {	
 		try {
-			$System=self::AddEqLogic('Système','System');
+			$System=Freebox_OS::AddEqLogic('Système','System');
 			$Commande=self::AddCommande($System,'Update','update',"action",'other','Freebox_OS_System');
 			log::add('Freebox_OS','debug','Vérification d\'une mise a jours du serveur');
 			$firmwareOnline=file_get_contents("http://dev.freebox.fr/blog/?cat=5");
@@ -286,8 +286,30 @@ class FreeboxAPI{
 					$Tile=Freebox_OS::AddEqLogic('Tile','Tile');
 					foreach($Equipements['data'] as $Equipement){
 						if($Equipement['label']!=''){
-							$Commande=Freebox_OS::AddCommande($Tile,$Equipement['label'],$Equipement['ep_id'],"info",'binary');
-							$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);
+							swich($Equipement['ui']['display']){
+								case "button":
+									foreach(str_split($Equipement['ui']['access']) as $access){
+										if($access = "r"){
+											$Commande=$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
+											$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);
+										}
+										if($access = "w"){
+											$Type= "action";
+											$SousType= 'other';
+											$Commande=$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
+										}
+									}
+								break;
+								case "slider":
+									$Type= "action";
+									$SousType= 'slider';
+								break;
+								default:
+									$Type= "info";
+									$SousType= 'binary';
+								break;
+								
+							}
 						}
 					}
 				}
@@ -312,7 +334,7 @@ class FreeboxAPI{
 				{
 					if($Equipement['label']!='')
 					{
-						$Commande=Freebox_OS::AddCommande($HomeAdapters,$Equipement['label'],$Equipement['id'],"info",'binary');
+						$Commande=$HomeAdapters->AddCommande($Equipement['label'],$Equipement['id'],"info",'binary');
 						$HomeAdapters->checkAndUpdateCmd($Equipement['id'],$Equipement['status']);
 					}
 				}
@@ -336,7 +358,7 @@ class FreeboxAPI{
 				{
 					if($Equipement['primary_name']!='')
 					{
-						$Commande=Freebox_OS::AddCommande($Reseau,$Equipement['primary_name'],$Equipement['id'],"info",'binary','Freebox_OS_Reseau');
+						$Commande=$Reseau->AddCommande($Equipement['primary_name'],$Equipement['id'],"info",'binary','Freebox_OS_Reseau');
 						$Commande->setConfiguration('host_type',$Equipement['host_type']);
 						if (isset($result['l3connectivities']))
 						{
