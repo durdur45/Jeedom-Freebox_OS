@@ -179,7 +179,7 @@ class FreeboxAPI{
 				$used_bytes=$Disques['partitions'][0]['used_bytes'];
 				$value=round($used_bytes/$total_bytes*100,2);
 				log::add('Freebox_OS','debug','Occupation ['.$Disques['type'].'] - '.$Disques['id'].': '. $used_bytes.'/'.$total_bytes.' => '.$value.'%');
-				$Disque=self::AddEqLogic('Disque Dur','Disque');
+				$Disque=Freebox_OS::AddEqLogic('Disque Dur','Disque');
 				$commande=self::AddCommande($Disque,'Occupation ['.$Disques['type'].'] - '.$Disques['id'],$Disques['id'],"info",'numeric','Freebox_OS_Disque','%');
 				$commande->setCollectDate(date('Y-m-d H:i:s'));
 				$commande->setConfiguration('doNotRepeatEvent', 1);
@@ -247,7 +247,7 @@ class FreeboxAPI{
 	}	
 	public function UpdateSystem() {	
 		try {
-			$System=self::AddEqLogic('Système','System');
+			$System=Freebox_OS::AddEqLogic('Système','System');
 			$Commande=self::AddCommande($System,'Update','update',"action",'other','Freebox_OS_System');
 			log::add('Freebox_OS','debug','Vérification d\'une mise a jours du serveur');
 			$firmwareOnline=file_get_contents("http://dev.freebox.fr/blog/?cat=5");
