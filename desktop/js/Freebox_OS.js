@@ -52,7 +52,7 @@ function addCmdToTable(_cmd) {
 		.append($('<div>')
 			.append($('<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove">')))
 		.append($('<div>')
-			.append($('<i class="fa fa-arrows-v pull-left cursor bt_sortable" style="margin-top: 9px;">'))));
+			.append($('<i class="fa fa-arrows-v pull-left cursor bt_sortable">'))));
 	tr.append($('<td>')
 		.append($('<div>')
 			.append($('<input class="cmdAttr form-control input-sm" data-l1key="id" style="display : none;">'))
@@ -63,7 +63,7 @@ function addCmdToTable(_cmd) {
 			.append($('<input type="hidden" class="cmdAttr" data-l1key="configuration" data-l2key="host_type" />'))
 			.append($('<input type="hidden" class="cmdAttr" data-l1key="type" />'))
 			.append($('<input type="hidden" class="cmdAttr" data-l1key="subType" />'))	
-		.append($('<div style="width : 40%;display : inline-block;">')
+		.append($('<div>')
 			.append($('<span>')
 				.append('{{Historiser}}')
 				.append($('<input type="checkbox" class="cmdAttr" data-size="mini" data-label-text="{{Historiser}}" data-l1key="isHistorized" checked/>')))
@@ -71,7 +71,7 @@ function addCmdToTable(_cmd) {
 			.append($('<span>')
 				.append('{{Afficher}}')
 				.append($('<input type="checkbox" class="cmdAttr" data-size="mini" data-label-text="{{Afficher}}" data-l1key="isVisible" checked/>'))))
-			.append($('<div style="width : 40%;display : inline-block;">')	
+			.append($('<div>')	
 				.append($('<input class="cmdAttr form-control input-sm" data-l1key="unite" placeholder="{{Unité}}" title="Unité"/>'))));  
 		var parmetre=$('<td>');
 	if (is_numeric(_cmd.id)) {
