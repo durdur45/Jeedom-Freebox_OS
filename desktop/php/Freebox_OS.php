@@ -181,5 +181,5 @@
 		</div>
 	</div>
 </div>
-<?php include_file('desktop', 'Freebox_OS', 'js', 'template');?>
+<?php include_file('desktop', 'Freebox_OS', 'js', 'Freebox_OS');?>
 <?php include_file('core', 'plugin.template', 'js');?>
