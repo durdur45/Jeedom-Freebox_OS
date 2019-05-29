@@ -269,7 +269,216 @@ class Freebox_OS extends eqLogic {
 			foreach(eqLogic::byType('Freebox_OS') as $Equipement){
 				if($Equipement->getIsEnable()){
 					foreach($Equipement->getCmd('info') as $Commande){
-						$Commande->execute();
+						switch ($Equipement->getLogicalId())
+						{
+							case 'ADSL':
+								$result = $FreeboxAPI->adslStats();
+								if($result!=false){
+									switch ($Commande->getLogicalId()) 
+									{
+										case "rate_down":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['rate_down']);
+										break;
+										case "rate_up":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['rate_up']);
+										break;
+										case "bandwidth_up":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['bandwidth_up']);
+										break;
+										case "bandwidth_down":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['bandwidth_down']);
+										break;
+										case "media":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['media']);
+										break;
+										case "state":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['state']);
+										break;
+									}
+								}
+							break;
+							case 'Downloads':
+								$result = $FreeboxAPI->DownloadStats();
+								if($result!=false){
+									switch ($Commande->getLogicalId())
+									{
+										case "nb_tasks":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks']);
+										break;
+										case "nb_tasks_downloading":
+											$return= $result[''];
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks_downloading']);
+										break;
+										case "nb_tasks_done":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks_done']);
+										break;
+										case "rx_rate":
+											$result= $result['rx_rate'];
+											if(function_exists('bcdiv'))
+												$result= bcdiv($result,1048576,2);
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
+										break;
+										case "tx_rate":
+											$result= $result['tx_rate'];
+											if(function_exists('bcdiv'))
+												$result= bcdiv($result,1048576,2);
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
+										break;
+										case "nb_tasks_active":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks_active']);
+										break;
+										case "nb_tasks_stopped":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks_stopped']);
+										break;
+										case "nb_tasks_queued":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks_queued']);
+										break;
+										case "nb_tasks_repairing":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks_repairing']);
+										break;
+										case "nb_tasks_extracting":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks_extracting']);
+										break;
+										case "nb_tasks_error":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks_error']);
+										break;    
+										case "nb_tasks_checking":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks_checking']);
+										break;    
+									}
+								}
+							break;
+							case 'System':
+								if($Commande->getLogicalId()=="wifiStatut"||$Commande->getLogicalId()=="wifiOnOff"||$Commande->getLogicalId()=='wifiOn'||$this->getLogicalId()=='wifiOff')
+									$result = $FreeboxAPI->wifi();
+								else
+									$result = $FreeboxAPI->system();
+									switch ($Commande->getLogicalId()) 
+									{
+										case "mac":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['mac']);
+										break;
+										case "fan_rpm":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['fan_rpm']);
+										break;
+										case "temp_sw":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['temp_sw']);
+										break;
+										case "uptime":
+											$result= $result['uptime'];
+											$result=str_replace(' heure ','h ',$result);
+											$result=str_replace(' heures ','h ',$result);
+											$result=str_replace(' minute ','min ',$result);
+											$result=str_replace(' minutes ','min ',$result);
+											$result=str_replace(' secondes','s',$result);
+											$result=str_replace(' seconde','s',$result);
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
+										break;
+										case "board_name":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['board_name']);
+										break;
+										case "temp_cpub":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['temp_cpub']);
+										break;
+										case "temp_cpum":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['temp_cpum']);
+										break;
+										case "serial":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['serial']);
+										break;
+										case "firmware_version":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['firmware_version']);
+										break;
+										case "wifiStatut":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
+										break;
+									}		
+								
+							break;
+							case 'Disque':		
+								$result = $FreeboxAPI->disques($Commande->getLogicalId());
+								if($result!=false)			
+									$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
+							break;
+							case 'Phone':
+								$result = $FreeboxAPI->nb_appel_absence();
+								if($result!=false){
+									switch ($Commande->getLogicalId()) 
+									{
+										case "nbAppelsManquee":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['missed']);
+										break;
+										case "nbAppelRecus":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['accepted']);
+										break;
+										case "nbAppelPasse":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['outgoing']);
+										break;
+										case "listAppelsManquee":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['list_missed']);
+										break;
+										case "listAppelsRecus":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['list_accepted']);
+										break;
+										case "listAppelsPasse":
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['list_outgoing']);
+										break;
+									}
+								}
+							break;
+							case'Reseau':
+								$result=$FreeboxAPI->ReseauPing($Commande->getLogicalId());
+								if($result!=false){
+									if (isset($result['l3connectivities']))
+									{
+										foreach($result['l3connectivities'] as $Ip){
+											if ($Ip['active']){
+												if($Ip['af']=='ipv4')
+													$Commande->setConfiguration('IPV4',$Ip['addr']);
+												else
+													$Commande->setConfiguration('IPV6',$Ip['addr']);
+											}
+										}
+									}
+									$Commande->setConfiguration('host_type',$result['host_type']);
+									$Commande->save();
+									if (isset($result['active'])) {
+										if ($result['active'] == 'true') {
+										    	$Commande->setOrder($Commande->getOrder() % 1000);
+										    	$Commande->save();
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),true);
+										} else {
+										    	$Commande->setOrder($Commande->getOrder() % 1000 + 1000);
+										    	$Commande->save();
+											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),false);
+										}
+									} else {
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),false);
+									}
+								}
+							break;
+							case'HomeAdapters':
+								$result=$FreeboxAPI->getHomeAdapterStatus($Commande->getLogicalId());
+								//if($result!=false){
+									$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['status']);
+								//}
+							break;
+							case'FreeboxTv':
+								switch($Commande->getLogicalId()){
+									case 'powerstat':
+										$result=exec('nc -zv '.$Equipement->getConfiguration('FREEBOX_TV_IP').' 7000 2>&1 | grep -E "open|succeeded" | wc -l');
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
+										log::add('Freebox_OS','debug','Etat du player freebox '.$Equipement->getConfiguration('FREEBOX_TV_IP').' '.$result);
+									break;
+								}
+							break;
+							default:
+								$result=$FreeboxAPI->getTile($Commande->getLogicalId());
+								if($result!=false){
+									$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['value']);
+								}
+							break;
+						}
 					}
 				}
 			}
@@ -397,42 +606,6 @@ class Freebox_OSCmd extends cmd {
 						case "update":
 							$FreeboxAPI->UpdateSystem();
 							break;
-						case "mac":
-							$return= $result['mac'];
-							break;
-						case "fan_rpm":
-							$return= $result['fan_rpm'];
-							break;
-						case "temp_sw":
-							$return= $result['temp_sw'];
-							break;
-						case "uptime":
-							$return= $result['uptime'];
-							$return=str_replace(' heure ','h ',$return);
-							$return=str_replace(' heures ','h ',$return);
-							$return=str_replace(' minute ','min ',$return);
-							$return=str_replace(' minutes ','min ',$return);
-							$return=str_replace(' secondes','s',$return);
-							$return=str_replace(' seconde','s',$return);
-							break;
-						case "board_name":
-							$return= $result['board_name'];
-							break;
-						case "temp_cpub":
-							$return= $result['temp_cpub'];
-							break;
-						case "temp_cpum":
-							$return= $result['temp_cpum'];
-							break;
-						case "serial":
-							$return= $result['serial'];
-							break;
-						case "firmware_version":
-							$return= $result['firmware_version'];
-							break;
-						case "wifiStatut":
-							$return= $result;
-							break;
 						case "wifiOnOff":
 							if($result==true) 
 								$FreeboxAPI->wifiPUT(0);
@@ -449,35 +622,11 @@ class Freebox_OSCmd extends cmd {
 							$FreeboxAPI->PortForwarding($_options['message']);
 				}		break;
 			break;
-			case 'Disque':		
-				$result = $FreeboxAPI->disques($this->getLogicalId());
-				if($result!=false)			
-					$return= $result;
-			break;
 			case 'Phone':
 				$result = $FreeboxAPI->nb_appel_absence();
 				if($result!=false){
 					switch ($this->getLogicalId()) 
 					{
-						case "nbAppelsManquee":
-							$return= $result['missed'];
-							//$return= $result;
-							break;
-						case "nbAppelRecus":
-							$return= $result['accepted'];
-							break;
-						case "nbAppelPasse":
-							$return= $result['outgoing'];
-							break;
-						case "listAppelsManquee":
-							$return= $result['list_missed'];
-							break;
-						case "listAppelsRecus":
-							$return= $result['list_accepted'];
-							break;
-						case "listAppelsPasse":
-							$return= $result['list_outgoing'];
-							break;
 						case "sonnerieDectOn":
 							$FreeboxAPI->ringtone_on();
 							break;
@@ -487,49 +636,8 @@ class Freebox_OSCmd extends cmd {
 					}
 				}
 			break;
-			case'Reseau':
-				$result=$FreeboxAPI->ReseauPing($this->getLogicalId());
-				if($result!=false){
-					if (isset($result['l3connectivities']))
-					{
-						foreach($result['l3connectivities'] as $Ip){
-							if ($Ip['active']){
-								if($Ip['af']=='ipv4')
-									$this->setConfiguration('IPV4',$Ip['addr']);
-								else
-									$this->setConfiguration('IPV6',$Ip['addr']);
-							}
-						}
-					}
-					$this->setConfiguration('host_type',$result['host_type']);
-					$this->save();
-					if (isset($result['active'])) {
-						if ($result['active'] == 'true') {
-						    $this->setOrder($this->getOrder() % 1000);
-						    $this->save();
-						    $return = 1;
-						} else {
-						    $this->setOrder($this->getOrder() % 1000 + 1000);
-						    $this->save();
-						    $return = 0;
-						}
-					} else {
-						$return=0;
-					}
-				}
-			break;
-			case'HomeAdapters':
-				$result=$FreeboxAPI->getHomeAdapterStatus($this->getLogicalId());
-				if($result!=false){
-					$this->getEqLogic()->checkAndUpdateCmd($this->getLogicalId(),$result['status']);
-				}
-			break;
 			case'FreeboxTv':
 				switch($this->getLogicalId()){
-					case 'powerstat':
-						$return=exec('nc -zv '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' 7000 2>&1 | grep -E "open|succeeded" | wc -l');
-						log::add('Freebox_OS','debug','Etat du player freebox '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$return);
-					break;
 					case 'power':
 						if($this->getEqLogic()->getConfiguration('mini4k')) {
 							$result=exec('sudo '.dirname(__FILE__) .'/../../ressources/mini4k_cmd '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$this->getLogicalId());
@@ -563,19 +671,6 @@ class Freebox_OSCmd extends cmd {
 					break;
 				}
 			break;
-			default:
-				$result=$FreeboxAPI->getTile($this->getLogicalId());
-				if($result!=false){
-					$this->getEqLogic()->checkAndUpdateCmd($this->getLogicalId(),$result['value']);
-				}
-			break;
 		}		
-		if (isset($return) && $this->execCmd() != $return){
-			$this->setCollectDate(date('Y-m-d H:i:s'));
-			$this->setConfiguration('doNotRepeatEvent', 1);
-			$this->event($return);
-			$this->getEqLogic()->refreshWidget();
-			return $return;
-		}
 	}
 }
