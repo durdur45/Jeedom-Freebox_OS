@@ -269,13 +269,11 @@ class Freebox_OS extends eqLogic {
 			foreach(eqLogic::byType('Freebox_OS') as $Equipement){
 				if($Equipement->getIsEnable()){
 					foreach($Equipement->getCmd('info') as $Commande){
-						switch ($Equipement->getLogicalId())
-						{
+						switch ($Equipement->getLogicalId()){
 							case 'ADSL':
 								$result = $FreeboxAPI->adslStats();
 								if($result!=false){
-									switch ($Commande->getLogicalId()) 
-									{
+									switch ($Commande->getLogicalId()) {
 										case "rate_down":
 											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['rate_down']);
 										break;
@@ -300,8 +298,7 @@ class Freebox_OS extends eqLogic {
 							case 'Downloads':
 								$result = $FreeboxAPI->DownloadStats();
 								if($result!=false){
-									switch ($Commande->getLogicalId())
-									{
+									switch ($Commande->getLogicalId()){
 										case "nb_tasks":
 											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks']);
 										break;
@@ -349,50 +346,49 @@ class Freebox_OS extends eqLogic {
 								}
 							break;
 							case 'System':
-								if($Commande->getLogicalId()=="wifiStatut"||$Commande->getLogicalId()=="wifiOnOff"||$Commande->getLogicalId()=='wifiOn'||$this->getLogicalId()=='wifiOff')
+								if($Commande->getLogicalId()=="wifiStatut")
 									$result = $FreeboxAPI->wifi();
 								else
 									$result = $FreeboxAPI->system();
-									switch ($Commande->getLogicalId()) 
-									{
-										case "mac":
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['mac']);
-										break;
-										case "fan_rpm":
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['fan_rpm']);
-										break;
-										case "temp_sw":
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['temp_sw']);
-										break;
-										case "uptime":
-											$result= $result['uptime'];
-											$result=str_replace(' heure ','h ',$result);
-											$result=str_replace(' heures ','h ',$result);
-											$result=str_replace(' minute ','min ',$result);
-											$result=str_replace(' minutes ','min ',$result);
-											$result=str_replace(' secondes','s',$result);
-											$result=str_replace(' seconde','s',$result);
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
-										break;
-										case "board_name":
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['board_name']);
-										break;
-										case "temp_cpub":
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['temp_cpub']);
-										break;
-										case "temp_cpum":
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['temp_cpum']);
-										break;
-										case "serial":
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['serial']);
-										break;
-										case "firmware_version":
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['firmware_version']);
-										break;
-										case "wifiStatut":
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
-										break;
-									}		
+								switch ($Commande->getLogicalId()){
+									case "mac":
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['mac']);
+									break;
+									case "fan_rpm":
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['fan_rpm']);
+									break;
+									case "temp_sw":
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['temp_sw']);
+									break;
+									case "uptime":
+										$result= $result['uptime'];
+										$result=str_replace(' heure ','h ',$result);
+										$result=str_replace(' heures ','h ',$result);
+										$result=str_replace(' minute ','min ',$result);
+										$result=str_replace(' minutes ','min ',$result);
+										$result=str_replace(' secondes','s',$result);
+										$result=str_replace(' seconde','s',$result);
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
+									break;
+									case "board_name":
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['board_name']);
+									break;
+									case "temp_cpub":
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['temp_cpub']);
+									break;
+									case "temp_cpum":
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['temp_cpum']);
+									break;
+									case "serial":
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['serial']);
+									break;
+									case "firmware_version":
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['firmware_version']);
+									break;
+									case "wifiStatut":
+										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
+									break;
+								}		
 								
 							break;
 							case 'Disque':		
