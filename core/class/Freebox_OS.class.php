@@ -104,12 +104,12 @@ class Freebox_OS extends eqLogic {
 		self::AddEqLogic('Disque Dur','Disque');
 		// ADSL
 		$ADSL=self::AddEqLogic('ADSL','ADSL');
-		$ADSL->AddCommande('Freebox rate down','rate_down',"info",'numeric','Freebox_OS_Adsl');
-		$ADSL->AddCommande('Freebox rate up','rate_up',"info",'numeric','Freebox_OS_Adsl');
-		$ADSL->AddCommande('Freebox bandwidth up','bandwidth_up',"info",'numeric','Freebox_OS_Adsl');
-		$ADSL->AddCommande('Freebox bandwidth down','bandwidth_down',"info",'numeric','Freebox_OS_Adsl');
-		$ADSL->AddCommande('Freebox media','media',"info",'string','Freebox_OS_Adsl');
-		$ADSL->AddCommande('Freebox state','state',"info",'string','Freebox_OS_Adsl');
+		$ADSL->AddCommande('Freebox rate down','rate_down',"info",'numeric','','Ko/s');
+		$ADSL->AddCommande('Freebox rate up','rate_up',"info",'numeric','','Ko/s');
+		$ADSL->AddCommande('Freebox bandwidth up','bandwidth_up',"info",'numeric','','Mb/s');
+		$ADSL->AddCommande('Freebox bandwidth down','bandwidth_down',"info",'numeric','','Mb/s');
+		$ADSL->AddCommande('Freebox media','media',"info",'string');
+		$ADSL->AddCommande('Freebox state','state',"info",'string');
 		$System=self::AddEqLogic('Système','System');
 		$System->AddCommande('Update','update',"action",'other','Freebox_OS_System');
 		$System->AddCommande('Reboot','reboot',"action",'other','Freebox_OS_System');

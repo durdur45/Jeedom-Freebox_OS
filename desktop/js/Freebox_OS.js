@@ -24,6 +24,10 @@ $('.Equipement').on('click', function() {
 });
 function addCmdToTable(_cmd) {
 	switch($('.eqLogicAttr[data-l1key=logicalId]').val()){
+		case 'Home Adapters':
+			$('.Equipement').show();
+			$('.TvParameter').hide();
+		break;
 		case 'Reseau':
 			$('.Equipement').show();
 			$('.TvParameter').hide();
