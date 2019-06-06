@@ -5,7 +5,7 @@
 	"licence" : "AGPL",
 	"author" : "Halbout Michael",
 	"require" : "3.0",
-	"category" : "multimedia",
+	"category" : "monitoring",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"hasOwnDeamon" : true,
 	"hasDependency" : true,
