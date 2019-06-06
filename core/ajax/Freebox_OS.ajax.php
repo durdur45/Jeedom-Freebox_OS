@@ -72,7 +72,7 @@ try {
 			}
 			ajax::success(false);
 		break;
-		default:
+		case 'SearchTile':
 			ajax::success($FreeboxAPI->getTiles());
 		break;
 	}	

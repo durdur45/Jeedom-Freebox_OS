@@ -5,22 +5,38 @@ $('.MaFreebox').on('click', function() {
 		height: 700,
 		width: 850});
 	$('#md_modal').load('index.php?v=d&modal=MaFreebox&plugin=Freebox_OS&type=Freebox_OS').dialog('open');
+}); 
+$('.eqLogicAction[data-action=tile]').on('click', function() {
+	$.ajax({
+		type: 'POST',            
+		async: false,
+		url: 'plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php',
+		data:{
+			action: 'SearchTile'
+		},
+		dataType: 'json',
+		global: false,
+		error: function(request, status, error) {},
+		success: function(data) {
+			location.reload();
+		}
+	});
 });
 $('.Equipement').on('click', function() {
 	$.ajax({
 		type: 'POST',            
 		async: false,
 		url: 'plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php',
-		data:
-			{
+		data:{
 			action: 'Search'+$('.eqLogicAttr[data-l1key=logicalId]').val()
-			},
+		},
 		dataType: 'json',
 		global: false,
 		error: function(request, status, error) {},
 		success: function(data) {
-			}
-		});
+			location.reload();
+		}
+	});
 });
 function addCmdToTable(_cmd) {
 	switch($('.eqLogicAttr[data-l1key=logicalId]').val()){
