@@ -269,6 +269,8 @@ class Freebox_OS extends eqLogic {
 			foreach(eqLogic::byType('Freebox_OS') as $Equipement){
 				if($Equipement->getIsEnable()){
 					switch ($Equipement->getLogicalId()){
+						case 'AirPlay':
+						break;
 						case 'ADSL':
 							$result = $FreeboxAPI->adslStats();
 							if($result!=false){
