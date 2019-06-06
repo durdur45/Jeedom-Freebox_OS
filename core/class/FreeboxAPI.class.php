@@ -180,7 +180,7 @@ class FreeboxAPI{
 				$value=round($used_bytes/$total_bytes*100,2);
 				log::add('Freebox_OS','debug','Occupation ['.$Disques['type'].'] - '.$Disques['id'].': '. $used_bytes.'/'.$total_bytes.' => '.$value.'%');
 				$Disque=Freebox_OS::AddEqLogic('Disque Dur','Disque');
-				$commande=$Disque->AddCommande($Disque,'Occupation ['.$Disques['type'].'] - '.$Disques['id'],$Disques['id'],"info",'numeric','Freebox_OS_Disque','%');
+				$commande=$Disque->AddCommande('Occupation ['.$Disques['type'].'] - '.$Disques['id'],$Disques['id'],"info",'numeric','Freebox_OS_Disque','%');
 				$commande->setCollectDate(date('Y-m-d H:i:s'));
 				$commande->setConfiguration('doNotRepeatEvent', 1);
 				$commande->event($value);
@@ -248,7 +248,7 @@ class FreeboxAPI{
 	public function UpdateSystem() {	
 		try {
 			$System=Freebox_OS::AddEqLogic('Système','System');
-			$Commande=$System->AddCommande($System,'Update','update',"action",'other','Freebox_OS_System');
+			$Commande=$System->AddCommande('Update','update',"action",'other','Freebox_OS_System');
 			log::add('Freebox_OS','debug','Vérification d\'une mise a jours du serveur');
 			$firmwareOnline=file_get_contents("http://dev.freebox.fr/blog/?cat=5");
 			preg_match_all('|<h1><a href=".*">Mise à jour du Freebox Server (.*)</a></h1>|U', $firmwareOnline , $parseFreeDev, PREG_PATTERN_ORDER);			
