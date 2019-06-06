@@ -281,9 +281,8 @@ class FreeboxAPI{
 			$listEquipement = self::fetch('/api/v6/home/tileset/all');
 			self::close_session();
 			if($listEquipement['success']){
-				//$HomeAdapters=Freebox_OS::AddEqLogic('Tile','Tile');
 				foreach($listEquipement['result'] as $Equipements){
-					$Tile=Freebox_OS::AddEqLogic('Tile','Tile');
+					$Tile=Freebox_OS::AddEqLogic('Tile',$Equipements['node_id']);
 					foreach($Equipements['data'] as $Equipement){
 						if($Equipement['label']!=''){
 							switch($Equipement['ui']['display']){
@@ -292,23 +291,26 @@ class FreeboxAPI{
 										if($access = "r"){
 											$Type= "info";
 											$SousType= 'binary';
-											$Commande=$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
+											$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
 											$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);
 										}
 										if($access = "w"){
 											$Type= "action";
 											$SousType= 'other';
-											$Commande=$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
+											$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
 										}
 									}
 								break;
 								case "slider":
 									$Type= "action";
 									$SousType= 'slider';
+									$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
 								break;
 								default:
 									$Type= "info";
 									$SousType= 'binary';
+									$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
+									$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);										
 								break;
 								
 							}

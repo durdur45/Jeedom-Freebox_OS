@@ -268,11 +268,11 @@ class Freebox_OS extends eqLogic {
 				break;
 			foreach(eqLogic::byType('Freebox_OS') as $Equipement){
 				if($Equipement->getIsEnable()){
-					foreach($Equipement->getCmd('info') as $Commande){
-						switch ($Equipement->getLogicalId()){
-							case 'ADSL':
-								$result = $FreeboxAPI->adslStats();
-								if($result!=false){
+					switch ($Equipement->getLogicalId()){
+						case 'ADSL':
+							$result = $FreeboxAPI->adslStats();
+							if($result!=false){
+								foreach($Equipement->getCmd('info') as $Commande){
 									switch ($Commande->getLogicalId()) {
 										case "rate_down":
 											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['rate_down']);
@@ -294,10 +294,12 @@ class Freebox_OS extends eqLogic {
 										break;
 									}
 								}
-							break;
-							case 'Downloads':
-								$result = $FreeboxAPI->DownloadStats();
-								if($result!=false){
+							}
+						break;
+						case 'Downloads':
+							$result = $FreeboxAPI->DownloadStats();
+							if($result!=false){
+								foreach($Equipement->getCmd('info') as $Commande){
 									switch ($Commande->getLogicalId()){
 										case "nb_tasks":
 											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['nb_tasks']);
@@ -344,8 +346,10 @@ class Freebox_OS extends eqLogic {
 										break;    
 									}
 								}
-							break;
-							case 'System':
+							}
+						break;
+						case 'System':
+							foreach($Equipement->getCmd('info') as $Commande){
 								if($Commande->getLogicalId()=="wifiStatut")
 									$result = $FreeboxAPI->wifi();
 								else
@@ -389,18 +393,20 @@ class Freebox_OS extends eqLogic {
 										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
 									break;
 								}		
-								
-							break;
-							case 'Disque':		
-								$result = $FreeboxAPI->disques($Commande->getLogicalId());
-								if($result!=false)			
+							}
+						break;
+						case 'Disque':		
+							$result = $FreeboxAPI->disques($Commande->getLogicalId());
+							if($result!=false){								
+								foreach($Equipement->getCmd('info') as $Commande)
 									$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
-							break;
-							case 'Phone':
-								$result = $FreeboxAPI->nb_appel_absence();
-								if($result!=false){
-									switch ($Commande->getLogicalId()) 
-									{
+							}
+						break;
+						case 'Phone':
+							$result = $FreeboxAPI->nb_appel_absence();
+							if($result!=false){								
+								foreach($Equipement->getCmd('info') as $Commande){
+									switch ($Commande->getLogicalId()) {
 										case "nbAppelsManquee":
 											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['missed']);
 										break;
@@ -421,12 +427,13 @@ class Freebox_OS extends eqLogic {
 										break;
 									}
 								}
-							break;
-							case'Reseau':
-								$result=$FreeboxAPI->ReseauPing($Commande->getLogicalId());
-								if($result!=false){
-									if (isset($result['l3connectivities']))
-									{
+							}
+						break;
+						case'Reseau':
+							$result=$FreeboxAPI->ReseauPing($Commande->getLogicalId());
+							if($result!=false){								
+								foreach($Equipement->getCmd('info') as $Commande){
+									if (isset($result['l3connectivities']))	{
 										foreach($result['l3connectivities'] as $Ip){
 											if ($Ip['active']){
 												if($Ip['af']=='ipv4')
@@ -440,26 +447,29 @@ class Freebox_OS extends eqLogic {
 									$Commande->save();
 									if (isset($result['active'])) {
 										if ($result['active'] == 'true') {
-										    	$Commande->setOrder($Commande->getOrder() % 1000);
-										    	$Commande->save();
+											$Commande->setOrder($Commande->getOrder() % 1000);
+											$Commande->save();
 											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),true);
 										} else {
-										    	$Commande->setOrder($Commande->getOrder() % 1000 + 1000);
-										    	$Commande->save();
+											$Commande->setOrder($Commande->getOrder() % 1000 + 1000);
+											$Commande->save();
 											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),false);
 										}
 									} else {
 										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),false);
 									}
 								}
-							break;
-							case'HomeAdapters':
-								$result=$FreeboxAPI->getHomeAdapterStatus($Commande->getLogicalId());
-								//if($result!=false){
+							}
+						break;
+						case'HomeAdapters':
+							$result=$FreeboxAPI->getHomeAdapterStatus($Commande->getLogicalId());
+							//if($result!=false){
+								foreach($Equipement->getCmd('info') as $Commande)
 									$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['status']);
-								//}
-							break;
-							case'FreeboxTv':
+							//}
+						break;
+						case'FreeboxTv':
+							foreach($Equipement->getCmd('info') as $Commande){
 								switch($Commande->getLogicalId()){
 									case 'powerstat':
 										$result=exec('nc -zv '.$Equipement->getConfiguration('FREEBOX_TV_IP').' 7000 2>&1 | grep -E "open|succeeded" | wc -l');
@@ -467,14 +477,15 @@ class Freebox_OS extends eqLogic {
 										log::add('Freebox_OS','debug','Etat du player freebox '.$Equipement->getConfiguration('FREEBOX_TV_IP').' '.$result);
 									break;
 								}
-							break;
-							default:
-								$result=$FreeboxAPI->getTile($Commande->getLogicalId());
-								if($result!=false){
-									$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['value']);
-								}
-							break;
-						}
+							}
+						break;
+						default:
+							$result=$FreeboxAPI->getTile($Equipement->getLogicalId());
+							if($result!=false){
+								foreach($result as $Commande)
+									$Equipement->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
+							}
+						break;
 					}
 				}
 			}
