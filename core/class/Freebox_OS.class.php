@@ -484,7 +484,7 @@ class Freebox_OS extends eqLogic {
 						default:
 							$result=$FreeboxAPI->getTile($Equipement->getLogicalId());
 							if($result!=false){
-								foreach($result as $Commande)
+								foreach($result['data'] as $Commande)
 									$Equipement->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
 							}
 						break;
