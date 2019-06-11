@@ -476,7 +476,7 @@ class Freebox_OS extends eqLogic {
 							}
 						break;
 						case'HomeAdapters':
-							$result=$FreeboxAPI->getHomeAdapterStatus($Commande->getLogicalId());
+							$result=$FreeboxAPI->getHomeAdapterStatus($Equipement->getLogicalId());
 							//if($result!=false){
 								foreach($Equipement->getCmd('info') as $Commande){
 									if(is_object($Commande))
