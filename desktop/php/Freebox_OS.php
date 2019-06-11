@@ -27,7 +27,7 @@
     				<span>{{Configuration}}</span>
   			</div>
       			<div class="cursor MaFreebox logoSecondary">
-      				<i class="icon techno-freebox"></i>
+      				<i class="fas fa-wrench"></i>
     				<br>
     				<span>{{Parametre Freebox}}</span>
   			</div>
