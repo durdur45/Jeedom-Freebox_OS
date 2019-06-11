@@ -281,44 +281,56 @@ class FreeboxAPI{
 			$listEquipement = self::fetch('/api/v6/home/tileset/all');
 			self::close_session();
 			if($listEquipement['success']){
-				foreach($listEquipement['result'] as $Equipements){
-					$Tile=Freebox_OS::AddEqLogic('Tile',$Equipements['node_id']);
-					foreach($Equipements['data'] as $Equipement){
-						if($Equipement['label']!=''){
-							switch($Equipement['ui']['display']){
-								case "button":
-									foreach(str_split($Equipement['ui']['access']) as $access){
-										if($access = "r"){
-											$Type= "info";
-											$SousType= 'binary';
-											$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
-											$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);
-										}
-										if($access = "w"){
-											$Type= "action";
-											$SousType= 'other';
-											$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
-										}
-									}
-								break;
-								case "slider":
-									$Type= "action";
-									$SousType= 'slider';
-									$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
-								break;
-								default:
-									$Type= "info";
-									$SousType= 'binary';
-									$Tile->AddCommande($Equipement['label'],$Equipement['ep_id'],$Type,$SousType);
-									$Tile->checkAndUpdateCmd($Equipement['ep_id'],$Equipement['value']);										
-								break;
-								
+				foreach($listEquipement['result'] as $Equipement){
+                  	if(isset($Equipement['label']))
+				$Tile=Freebox_OS::AddEqLogic($Equipement['label'],$Equipement['node_id']);
+                  	else
+				$Tile=Freebox_OS::AddEqLogic($Equipement['type'],$Equipement['node_id']);
+			foreach($Equipement['data'] as $Commande){
+				if($Commande['label'] != ''){
+                          		switch($Commande['value_type']){
+                              			case "void":
+							$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action",'other');
+                              			break;
+                              			case "int":
+							foreach(str_split($Commande['ui']['access']) as $access){
+								if($access = "r"){
+									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"info",'numeric');
+									$Tile->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
+								}
+								if($access = "w"){
+									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action",'slider');
+								}
 							}
-						}
+                              			break;
+                              			case "bool":
+							foreach(str_split($Commande['ui']['access']) as $access){
+								if($access = "r"){
+									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"info",'binary');
+									$Tile->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
+								}
+								if($access = "w"){
+									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action",'other');
+								}
+							}
+					      break;
+					      case "string":
+							foreach(str_split($Commande['ui']['access']) as $access){
+								if($access = "r"){
+									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"info","string");
+									$Tile->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
+								}
+								if($access = "w"){
+									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action","message");
+								}
+							}
+                             			 break;
+                          			}	
 					}
 				}
 			}
-			return true;
+		}
+		return true;
 	}
 	public function getTile($id=''){
 			$Status = self::fetch('/api/v6/home/tileset/'.$id);
