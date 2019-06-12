@@ -473,11 +473,8 @@ class FreeboxAPI{
 		    log::add('Freebox_OS','error', $e->getCode());
 		}
 	}
-	public function airmediaConfig() {
-			$parametre["enabled"]=$this->getIsEnable();
-			$parametre["password"]=$this->getConfiguration('password');
-	        	$return=self::fetch('/api/v3/airmedia/config/',$parametre,"PUT");   
-	         	
+	public function airmediaConfig($parametre) {
+	        	$return=self::fetch('/api/v3/airmedia/config/',$parametre,"PUT");   	         	
 			if($return['success'])
 	                	return $return['result'];
 	                else

@@ -258,7 +258,9 @@ class Freebox_OS extends eqLogic {
 				$FreeboxAPI = new FreeboxAPI();
 				if($FreeboxAPI->open_session()===false)
 					break;
-				$FreeboxAPI->airmediaConfig();
+				$parametre["enabled"]=$this->getIsEnable();
+				$parametre["password"]=$this->getConfiguration('password');
+				$FreeboxAPI->airmediaConfig($parametre);
 				$FreeboxAPI->close_session();
 			break;
 		}
