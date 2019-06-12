@@ -255,7 +255,11 @@ class Freebox_OS extends eqLogic {
 				$this->AddCommande('Droite','right',"action",'other','Freebox_Tv');
 			break;
 			case 'AirPlay':
-				$this->airmediaConfig();
+				$FreeboxAPI = new FreeboxAPI();
+				if($FreeboxAPI->open_session()===false)
+					break;
+				$FreeboxAPI->airmediaConfig();
+				$FreeboxAPI->close_session();
 			break;
 		}
 		if($this->getLogicalId()=='')
