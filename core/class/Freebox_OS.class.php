@@ -544,10 +544,9 @@ class Freebox_OSCmd extends cmd {
 	public function execute($_options = array())	{
 		log::add('Freebox_OS','debug','Connexion sur la freebox pour '.$this->getName());
 		$FreeboxAPI= new FreeboxAPI();
-		switch ($this->getEqLogic()->getLogicalId())
-		{
+		switch ($this->getEqLogic()->getLogicalId()){
 			case 'ADSL':
-				$result = $FreeboxAPI->adslStats();
+				/*$result = $FreeboxAPI->adslStats();
 				if($result!=false){
 					switch ($this->getLogicalId()) 
 					{
@@ -570,14 +569,14 @@ class Freebox_OSCmd extends cmd {
 							$return= $result['state'];
 							break;
 					}
-				}
+				}*/
 			break;
 			case 'Downloads':
 				$result = $FreeboxAPI->DownloadStats();
 				if($result!=false){
 					switch ($this->getLogicalId())
 					{
-						case "nb_tasks":
+					/*	case "nb_tasks":
 							$return= $result['nb_tasks'];
 							break;
 						case "nb_tasks_downloading":
@@ -616,7 +615,7 @@ class Freebox_OSCmd extends cmd {
                                                         break;    
                                                 case "nb_tasks_checking":
                                                         $return= $result['nb_tasks_checking'];
-                                                        break;    
+                                                        break;    */
                                                 case "stop_dl":
                                                         $FreeboxAPI->Downloads(0);
 	                                                break;  
@@ -703,6 +702,23 @@ class Freebox_OSCmd extends cmd {
 						$return = $FreeboxAPI->AirMediaAction($receiver,"stop",$_options['titre'],$_options['message']);
 					break;
 				}
+			break;
+			default:
+				switch ($this->getSubType()) {
+					case 'slider':    
+						$parametre['value'] = $_options['slider'];
+					break;
+					case 'color':
+						$parametre['value'] = $_options['color'];
+					break;
+					case 'message':
+						$parametre['value'] = $_options['message'];
+					break;
+					case 'select':
+						$parametre['value'] = $_options['select'];
+					break;
+				}
+				$FreeboxAPI->setTile($this->getEqLogic()->getLogicalId(),$this->getLogicalId(),$parametre);
 			break;
 		}		
 	}
