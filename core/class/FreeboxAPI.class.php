@@ -338,8 +338,7 @@ class FreeboxAPI{
 				return $Status['result'];
 			else
 				return false;
-	}
-	
+	}	
 	public function getHomeAdapters(){
 			self::open_session();
 			$listEquipement = self::fetch('/api/v6/home/adapters');
@@ -356,6 +355,16 @@ class FreeboxAPI{
 				}
 			}
 			return true;
+	}
+	public function setTile($nodeId,$endpointId,$parametre) {
+	        	$return=self::fetch('/api/v6/home/endpoints/'.$nodeId.'/'.$endpointId.'/',$parametre,"PUT");   	         	
+			if($return['success'])
+	                	return $return['result'];
+	                else
+	                        return false;
+	}
+	public function ($value){
+			return self::fetch('/ ');
 	}
 	public function getHomeAdapterStatus($id=''){
 			$Status = self::fetch('/api/v6/home/adapters/'.$id);
