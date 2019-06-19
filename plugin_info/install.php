@@ -4,8 +4,10 @@ function Freebox_OS_install() {
 	Freebox_OS::CreateArchi();
 }
 function Freebox_OS_update() {
-	Freebox_OS::CreateArchi(); 
-	exec("sudo chmod 755 /var/www/html/plugins/Freebox_OS/ressources/mini4k_cmd");
+	Freebox_OS::CreateArchi();
+	foreach(eqLogic::byLogicalId('FreeboxPlayer','Freebox_OS',true) as $eqLogic){
+		$eqLogic->remove();
+	}
 }
 function Freebox_OS_remove() {
 }
