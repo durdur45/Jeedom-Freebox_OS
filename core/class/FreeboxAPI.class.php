@@ -2,11 +2,11 @@
 class FreeboxAPI{	
 	public function track_id() 	{
 		try {
-			$serveur		=trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
-			$app_id 		=trim(config::byKey('FREEBOX_SERVER_APP_ID','Freebox_OS'));
-			$app_name 		=trim(config::byKey('FREEBOX_SERVER_APP_NAME','Freebox_OS'));
-			$app_version 	=trim(config::byKey('FREEBOX_SERVER_APP_VERSION','Freebox_OS'));
-			$device_name 	=trim(config::byKey('FREEBOX_SERVER_DEVICE_NAME','Freebox_OS'));
+			$serveur=trim(config::byKey('FREEBOX_SERVER_IP','Freebox_OS'));
+			$app_id =trim(config::byKey('FREEBOX_SERVER_APP_ID','Freebox_OS'));
+			$app_name=trim(config::byKey('FREEBOX_SERVER_APP_NAME','Freebox_OS'));
+			$app_version=trim(config::byKey('FREEBOX_SERVER_APP_VERSION','Freebox_OS'));
+			$device_name=trim(config::byKey('FREEBOX_SERVER_DEVICE_NAME','Freebox_OS'));
 			$http = new com_http($serveur . '/api/v3/login/authorize/');
 			$http->setPost(
 				json_encode(
@@ -113,7 +113,7 @@ class FreeboxAPI{
 		} catch (Exception $e) {
 		    log::add('Freebox_OS','error', $e->getCode());
 		}
-    }
+    	}
 	public function close_session(){
 		try {
 			log::add('Freebox_OS','debug', 'closing session');
@@ -133,8 +133,7 @@ class FreeboxAPI{
    	public function Downloads($Etat){
 		$List_DL=self::fetch('/api/v3/downloads/');
 		$nbDL=count($List_DL['result']);
-		for($i = 0; $i < $nbDL; ++$i)
-		{
+		for($i = 0; $i < $nbDL; ++$i){
 			if ($Etat==0)
 				$Downloads=self::fetch('/api/v3/downloads/'.$List_DL['result'][$i]['id'],array("status"=>"stopped"),"PUT");
 			if ($Etat==1)
@@ -153,22 +152,21 @@ class FreeboxAPI{
 			return false;
 	}
 	public function PortForwarding($Port){
-			$PortForwarding = self::fetch('/api/v3/fw/redir/');
-			
-                        $nbPF=count($PortForwarding['result']);
-                        for($i = 0; $i < $nbPF; ++$i)
-			{
-				if ($PortForwarding['result'][$i]['wan_port_start'] == $Port)
-					if ($PortForwarding['result'][$i]['enabled'])
-        	                		$PortForwarding=self::fetch('/api/v3/fw/redir/'.$PortForwarding['result'][$i]['id'],array("enabled"=>false),"PUT");
-					else
-						$PortForwarding=self::fetch('/api/v3/fw/redir/'.$PortForwarding['result'][$i]['id'],array("enabled"=>true),"PUT");
-                                        
+		$PortForwarding = self::fetch('/api/v3/fw/redir/');
+		$nbPF=count($PortForwarding['result']);
+		for($i = 0; $i < $nbPF; ++$i)
+		{
+			if ($PortForwarding['result'][$i]['wan_port_start'] == $Port){
+				if ($PortForwarding['result'][$i]['enabled'])
+					$PortForwarding=self::fetch('/api/v3/fw/redir/'.$PortForwarding['result'][$i]['id'],array("enabled"=>false),"PUT");
+				else
+					$PortForwarding=self::fetch('/api/v3/fw/redir/'.$PortForwarding['result'][$i]['id'],array("enabled"=>true),"PUT");
 			}
-			if($PortForwarding['success'])	
-				return $PortForwarding['result'];
-			else
-				return false;
+		}
+		if($PortForwarding['success'])	
+			return $PortForwarding['result'];
+		else
+			return false;
 	}
 	public function disques($logicalId=''){
 		$reponse = self::fetch('/api/v3/storage/disk/');
@@ -188,62 +186,56 @@ class FreeboxAPI{
 		}
 	}
 	public function wifi(){
-			$data_json = self::fetch('/api/v3/wifi/config/');
-			
-			if($data_json['success']){
-				$value=0;
-				if($data_json['result']['enabled'])
-					$value=1;
-				log::add('Freebox_OS','debug','L\'état du wifi est '.$value);
-				return $value;
-			}
-			else
-				return false;
+		$data_json = self::fetch('/api/v3/wifi/config/');
+		if($data_json['success']){
+			$value=0;
+			if($data_json['result']['enabled'])
+				$value=1;
+			log::add('Freebox_OS','debug','L\'état du wifi est '.$value);
+			return $value;
+		}
+		else
+			return false;
 	}
 	public function wifiPUT($parametre) {
-			log::add('Freebox_OS','debug','Mise dans l\'état '.$parametre.' du wifi');
-			if ($parametre==1)
-				$return=self::fetch('/api/v3/wifi/config/',array("enabled" => true),"PUT");	
-			else
-				$return=self::fetch('/api/v2/wifi/config/',array("enabled" => false),"PUT");	
-			
-			if($return['success'])
-			{
-				return $return['result']['enabled'];
-			}
+		log::add('Freebox_OS','debug','Mise dans l\'état '.$parametre.' du wifi');
+		if ($parametre==1)
+			$return=self::fetch('/api/v3/wifi/config/',array("enabled" => true),"PUT");	
+		else
+			$return=self::fetch('/api/v2/wifi/config/',array("enabled" => false),"PUT");	
+		if($return['success'])
+		{
+			return $return['result']['enabled'];
+		}
 	}
 	public function reboot() {
-			$content=self::fetch('/api/v3/system/reboot/',null,"POST");	
-			
-			if($content['success'])
-				return $content;
-			else
-				return false;
+		$content=self::fetch('/api/v3/system/reboot/',null,"POST");	
+		if($content['success'])
+			return $content;
+		else
+			return false;
 	}
 	public function ringtone_on() {
-			$content=self::fetch('/api/v3/phone/dect_page_start/',"","POST");	
-			
-			if($content['success'])
-				return $content;
-			else
-				return false;
+		$content=self::fetch('/api/v3/phone/dect_page_start/',"","POST");	
+		if($content['success'])
+			return $content;
+		else
+			return false;
 	}
 	public function ringtone_off() {
-			$content=self::fetch('/api/v3/phone/dect_page_stop/',"","POST");	
-			
-			if($content['success'])
-				return $content;
-			else
-				return false;
+		$content=self::fetch('/api/v3/phone/dect_page_stop/',"","POST");	
+		if($content['success'])
+			return $content;
+		else
+			return false;
 	}
 	public function system() {		
-			$systemArray = self::fetch('/api/v3/system/');
-			
-			if($systemArray['success']){	
-				return $systemArray['result'];
-			}
-			else
-				return false;
+		$systemArray = self::fetch('/api/v3/system/');
+		if($systemArray['success']){	
+			return $systemArray['result'];
+		}
+		else
+			return false;
 	}	
 	public function UpdateSystem() {	
 		try {
@@ -259,22 +251,22 @@ class FreeboxAPI{
 		}
 	}
 	public function adslStats(){	
-			$adslRateJson = self::fetch('/api/v3/connection/');
-			if($adslRateJson['success']){		
-				$vdslRateJson = self::fetch('/api/v3/connection/xdsl/');				
-				if($vdslRateJson['result']['status']['modulation'] == "vdsl")
-					$adslRateJson['result']['media'] = $vdslRateJson['result']['status']['modulation'];
-				
-				$retourFbx = array(	'rate_down' 	=> round($adslRateJson['result']['rate_down']/1024,2), 
-									'rate_up' 		=> round($adslRateJson['result']['rate_up']/1024,2), 
-									'bandwidth_up' 	=> round($adslRateJson['result']['bandwidth_up']/1000000,2), 
-									'bandwidth_down' => round($adslRateJson['result']['bandwidth_down']/1000000,2), 
-									'media'			=> $adslRateJson['result']['media'],
-									'state' 		=> $adslRateJson['result']['state'] );
-				return $retourFbx;
-			}
-			else
-				return false;
+		$adslRateJson = self::fetch('/api/v3/connection/');
+		if($adslRateJson['success']){		
+			$vdslRateJson = self::fetch('/api/v3/connection/xdsl/');				
+			if($vdslRateJson['result']['status']['modulation'] == "vdsl")
+				$adslRateJson['result']['media'] = $vdslRateJson['result']['status']['modulation'];
+
+			$retourFbx = array(	'rate_down' 	=> round($adslRateJson['result']['rate_down']/1024,2), 
+								'rate_up' 		=> round($adslRateJson['result']['rate_up']/1024,2), 
+								'bandwidth_up' 	=> round($adslRateJson['result']['bandwidth_up']/1000000,2), 
+								'bandwidth_down' => round($adslRateJson['result']['bandwidth_down']/1000000,2), 
+								'media'			=> $adslRateJson['result']['media'],
+								'state' 		=> $adslRateJson['result']['state'] );
+			return $retourFbx;
+		}
+		else
+			return false;
 	}
 	public function getTiles(){
 			self::open_session();
@@ -332,134 +324,141 @@ class FreeboxAPI{
 		}
 		return true;
 	}
+	public function getTile($id=''){
+		$Status = self::fetch('/api/v6/home/tileset/'.$id);
+		if($Status['success'])
+			return $Status['result'];
+		else
+			return false;
+	}
 	public function setTile($nodeId,$endpointId,$parametre) {
-	        	$return=self::fetch('/api/v6/home/endpoints/'.$nodeId.'/'.$endpointId.'/',$parametre,"PUT");   	         	
-			if($return['success'])
-	                	return $return['result'];
-	                else
-	                        return false;
+		$return=self::fetch('/api/v6/home/endpoints/'.$nodeId.'/'.$endpointId.'/',$parametre,"PUT");   	         	
+		if($return['success'])
+			return $return['result'];
+		else
+			return false;
 	}
 	public function getHomeAdapters(){
-			self::open_session();
-			$listEquipement = self::fetch('/api/v6/home/adapters');
-			self::close_session();
-			if($listEquipement['success']){
-				$HomeAdapters=Freebox_OS::AddEqLogic('Home Adapters','HomeAdapters');
-				foreach($listEquipement['result'] as $Equipement)
+		self::open_session();
+		$listEquipement = self::fetch('/api/v6/home/adapters');
+		self::close_session();
+		if($listEquipement['success']){
+			$HomeAdapters=Freebox_OS::AddEqLogic('Home Adapters','HomeAdapters');
+			foreach($listEquipement['result'] as $Equipement)
+			{
+				if($Equipement['label']!='')
 				{
-					if($Equipement['label']!='')
-					{
-						$Commande=$HomeAdapters->AddCommande($Equipement['label'],$Equipement['id'],"info",'binary');
-						$HomeAdapters->checkAndUpdateCmd($Equipement['id'],$Equipement['status']);
-					}
+					$Commande=$HomeAdapters->AddCommande($Equipement['label'],$Equipement['id'],"info",'binary');
+					$HomeAdapters->checkAndUpdateCmd($Equipement['id'],$Equipement['status']);
 				}
 			}
-			return true;
+		}
+		return true;
 	}
 	public function getHomeAdapterStatus($id=''){
-			$Status = self::fetch('/api/v6/home/adapters/'.$id);
-			if($Status['success'])
-				return $Status['result'];
-			else
-				return false;
+		$Status = self::fetch('/api/v6/home/adapters/'.$id);
+		if($Status['success'])
+			return $Status['result'];
+		else
+			return false;
 	}
 	public function freeboxPlayerPing(){
-			self::open_session();
-			$listEquipement = self::fetch('/api/v3/lan/browser/pub/');
-			self::close_session();
-			if($listEquipement['success']){
-				$Reseau=Freebox_OS::AddEqLogic('Réseau','Reseau');
-				foreach($listEquipement['result'] as $Equipement)
+		self::open_session();
+		$listEquipement = self::fetch('/api/v3/lan/browser/pub/');
+		self::close_session();
+		if($listEquipement['success']){
+			$Reseau=Freebox_OS::AddEqLogic('Réseau','Reseau');
+			foreach($listEquipement['result'] as $Equipement)
+			{
+				if($Equipement['primary_name']!='')
 				{
-					if($Equipement['primary_name']!='')
+					$Commande=$Reseau->AddCommande($Equipement['primary_name'],$Equipement['id'],"info",'binary','Freebox_OS_Reseau');
+					$Commande->setConfiguration('host_type',$Equipement['host_type']);
+					if (isset($result['l3connectivities']))
 					{
-						$Commande=$Reseau->AddCommande($Equipement['primary_name'],$Equipement['id'],"info",'binary','Freebox_OS_Reseau');
-						$Commande->setConfiguration('host_type',$Equipement['host_type']);
-						if (isset($result['l3connectivities']))
-						{
-							foreach($Equipement['l3connectivities'] as $Ip){
-								if ($Ip['active']){
-									if($Ip['af']=='ipv4')
-										$Commande->setConfiguration('IPV4',$Ip['addr']);
-									else
-										$Commande->setConfiguration('IPV6',$Ip['addr']);
-								}
+						foreach($Equipement['l3connectivities'] as $Ip){
+							if ($Ip['active']){
+								if($Ip['af']=='ipv4')
+									$Commande->setConfiguration('IPV4',$Ip['addr']);
+								else
+									$Commande->setConfiguration('IPV6',$Ip['addr']);
 							}
 						}
-						if($Commande->execCmd() != $Equipement['active']){
-							$Commande->setCollectDate(date('Y-m-d H:i:s'));
-							$Commande->setConfiguration('doNotRepeatEvent', 1);
-							$Commande->event($Equipement['active']);
-						}
-						$Commande->save();	
 					}
+					if($Commande->execCmd() != $Equipement['active']){
+						$Commande->setCollectDate(date('Y-m-d H:i:s'));
+						$Commande->setConfiguration('doNotRepeatEvent', 1);
+						$Commande->event($Equipement['active']);
+					}
+					$Commande->save();	
 				}
 			}
-			return true;
+		}
+		return true;
 	}
 	public function ReseauPing($id=''){
-			$Ping = self::fetch('/api/v3/lan/browser/pub/'.$id);
-			
-			if($Ping['success'])
-				return $Ping['result'];
-			else
-				return false;
+		$Ping = self::fetch('/api/v3/lan/browser/pub/'.$id);
+
+		if($Ping['success'])
+			return $Ping['result'];
+		else
+			return false;
 	}
 	public function nb_appel_absence() {
-			$listNumber_missed='';
-			$listNumber_accepted='';
-			$listNumber_outgoing='';
-			$pre_check_con = self::fetch('/api/v3/call/log/');
-			if($pre_check_con['success']){			
-				$timestampToday = mktime(0, 0, 0, date('n'), date('j'), date('Y'));
-				if(isset($pre_check_con['result'])){
-					$nb_call = count($pre_check_con['result']);
-					
-					$cptAppel_outgoing = 0;
-					$cptAppel_missed = 0;
-					$cptAppel_accepted = 0;
-					for ($k=0; $k<$nb_call; $k++) 
+		$listNumber_missed='';
+		$listNumber_accepted='';
+		$listNumber_outgoing='';
+		$pre_check_con = self::fetch('/api/v3/call/log/');
+		if($pre_check_con['success']){			
+			$timestampToday = mktime(0, 0, 0, date('n'), date('j'), date('Y'));
+			if(isset($pre_check_con['result'])){
+				$nb_call = count($pre_check_con['result']);
+
+				$cptAppel_outgoing = 0;
+				$cptAppel_missed = 0;
+				$cptAppel_accepted = 0;
+				for ($k=0; $k<$nb_call; $k++) 
+				{
+					$jour = $pre_check_con['result'][$k]['datetime'];
+
+					$time = date('H:i', $pre_check_con['result'][$k]['datetime']);
+					if ($timestampToday <= $jour) 
 					{
-						$jour = $pre_check_con['result'][$k]['datetime'];
-						
-						$time = date('H:i', $pre_check_con['result'][$k]['datetime']);
-						if ($timestampToday <= $jour) 
+						if($pre_check_con['result'][$k]['name']==$pre_check_con['result'][$k]['number'])
 						{
-							if($pre_check_con['result'][$k]['name']==$pre_check_con['result'][$k]['number'])
-							{
-								$name="N.C.";
-							}
-							else						
-							{
-								$name=$pre_check_con['result'][$k]['name'];
-							}
-							
-							if ($pre_check_con['result'][$k]['type'] == 'missed')
-							{
-								$cptAppel_missed++;
-								$listNumber_missed.= $pre_check_con['result'][$k]['number'].": ".$name." à ".$time." - de ".$pre_check_con['result'][$k]['duration']."s<br>";
-							}
-							if ($pre_check_con['result'][$k]['type'] == 'accepted')
-							{
-								$cptAppel_accepted++;
-								$listNumber_accepted.= $pre_check_con['result'][$k]['number'].": ".$name." à ".$time." - de ".$pre_check_con['result'][$k]['duration']."s<br>";
-							}
-							if ($pre_check_con['result'][$k]['type'] == 'outgoing')
-							{
-								$cptAppel_outgoing++;
-								$listNumber_outgoing.= $pre_check_con['result'][$k]['number'].": ".$name." à ".$time." - de ".$pre_check_con['result'][$k]['duration']."s<br>";
-							}
+							$name="N.C.";
+						}
+						else						
+						{
+							$name=$pre_check_con['result'][$k]['name'];
+						}
+
+						if ($pre_check_con['result'][$k]['type'] == 'missed')
+						{
+							$cptAppel_missed++;
+							$listNumber_missed.= $pre_check_con['result'][$k]['number'].": ".$name." à ".$time." - de ".$pre_check_con['result'][$k]['duration']."s<br>";
+						}
+						if ($pre_check_con['result'][$k]['type'] == 'accepted')
+						{
+							$cptAppel_accepted++;
+							$listNumber_accepted.= $pre_check_con['result'][$k]['number'].": ".$name." à ".$time." - de ".$pre_check_con['result'][$k]['duration']."s<br>";
+						}
+						if ($pre_check_con['result'][$k]['type'] == 'outgoing')
+						{
+							$cptAppel_outgoing++;
+							$listNumber_outgoing.= $pre_check_con['result'][$k]['number'].": ".$name." à ".$time." - de ".$pre_check_con['result'][$k]['duration']."s<br>";
 						}
 					}
-					$retourFbx = array('missed' => $cptAppel_missed, 'list_missed' => $listNumber_missed, 'accepted' => $cptAppel_accepted, 'list_accepted' => $listNumber_accepted, 'outgoing' => $cptAppel_outgoing,'list_outgoing' => $listNumber_outgoing );
 				}
-				else	
-					$retourFbx = array('missed' => 0, 'list_missed' => "", 'accepted' => 0, 'list_accepted' => "", 'outgoing' => 0,'list_outgoing' => "" );
-				
-				return $retourFbx;
+				$retourFbx = array('missed' => $cptAppel_missed, 'list_missed' => $listNumber_missed, 'accepted' => $cptAppel_accepted, 'list_accepted' => $listNumber_accepted, 'outgoing' => $cptAppel_outgoing,'list_outgoing' => $listNumber_outgoing );
 			}
-			else
-				return false;
+			else	
+				$retourFbx = array('missed' => 0, 'list_missed' => "", 'accepted' => 0, 'list_accepted' => "", 'outgoing' => 0,'list_outgoing' => "" );
+
+			return $retourFbx;
+		}
+		else
+			return false;
 	}
 	public function send_cmd_fbxtv($key){
 		try {
@@ -473,19 +472,19 @@ class FreeboxAPI{
 		}
 	}
 	public function airmediaConfig($parametre) {
-	        	$return=self::fetch('/api/v3/airmedia/config/',$parametre,"PUT");   	         	
-			if($return['success'])
-	                	return $return['result'];
-	                else
-	                        return false;
+		$return=self::fetch('/api/v3/airmedia/config/',$parametre,"PUT");   	         	
+		if($return['success'])
+			return $return['result'];
+		else
+			return false;
 	}
 	public static function airmediaReceivers() {
-	        	$return=self::fetch('/api/v3/airmedia/receivers/');   
-	         	
-			if($return['success'])
-	                	return $return['result'];
-	                else
-	                        return false;
+		$return=self::fetch('/api/v3/airmedia/receivers/');   
+
+		if($return['success'])
+			return $return['result'];
+		else
+			return false;
 	}
 	public function AirMediaAction($receiver,$action,$media_type,$media=null) {
 		if($receiver!=""&&$media_type!=null){
