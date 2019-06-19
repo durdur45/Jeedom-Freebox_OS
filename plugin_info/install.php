@@ -5,7 +5,7 @@ function Freebox_OS_install() {
 }
 function Freebox_OS_update() {
 	log::add('Freebox_OS','debug','Lancement du script de mise à jour'); 
-	foreach(eqLogic::byLogicalId('FreeboxPlayer','Freebox_OS',true) as $eqLogic){
+	foreach(eqLogic::byLogicalId('FreeboxTv','Freebox_OS',true) as $eqLogic){
 		$eqLogic->remove();
 	}
 	Freebox_OS::CreateArchi();
