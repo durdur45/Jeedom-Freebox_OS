@@ -42,23 +42,15 @@ function addCmdToTable(_cmd) {
 	switch($('.eqLogicAttr[data-l1key=logicalId]').val()){
 		case 'Home Adapters':
 			$('.Equipement').show();
-			$('.TvParameter').hide();
 		break;
 		case 'Reseau':
 			$('.Equipement').show();
-			$('.TvParameter').hide();
 		break;
 		case 'Disque':
 			$('.Equipement').show();
-			$('.TvParameter').hide();
-		break;
-		case 'FreeboxTv':
-			$('.Equipement').hide();
-			$('.TvParameter').show();
 		break;
 		default:
 			$('.Equipement').hide();
-			$('.TvParameter').hide();
 		break;
 	}
 	if (!isset(_cmd)) {
@@ -78,9 +70,6 @@ function addCmdToTable(_cmd) {
 			.append($('<input class="cmdAttr form-control input-sm" data-l1key="id" style="display : none;">'))
 			.append($('<input class="cmdAttr form-control input-sm" data-l1key="name" value="' + init(_cmd.name) + '" placeholder="{{Name}}" title="Name">'))));
 	tr.append($('<td>')
-			.append($('<input type="hidden" class="cmdAttr" data-l1key="template" data-l2key="dashboard" />'))
-			.append($('<input type="hidden" class="cmdAttr" data-l1key="template" data-l2key="mobile" />'))
-			.append($('<input type="hidden" class="cmdAttr" data-l1key="configuration" data-l2key="host_type" />'))
 			.append($('<input type="hidden" class="cmdAttr" data-l1key="type" />'))
 			.append($('<input type="hidden" class="cmdAttr" data-l1key="subType" />'))	
 		.append($('<div>')
