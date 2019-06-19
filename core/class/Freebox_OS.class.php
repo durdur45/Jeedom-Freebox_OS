@@ -219,41 +219,6 @@ class Freebox_OS extends eqLogic {
 	}
 	public function preSave() {	
 		switch($this->getLogicalId())	{
-			case 'FreeboxTv':
-				$ActionPower=$this->AddCommande('Power','power',"action",'other','Freebox_Tv');
-				$InfoPower=$this->AddCommande(' Statut Power','powerstat',"info",'binary','Freebox_Tv');
-				$ActionPower->setValue($InfoPower->getId());
-				$ActionPower->save();
-				$this->AddCommande('Volume +','vol_inc',"action",'other','Freebox_Tv');
-				$this->AddCommande('Volume -','vol_dec',"action",'other','Freebox_Tv');
-				$this->AddCommande('Programme +','prgm_inc',"action",'other','Freebox_Tv');
-				$this->AddCommande('Programme -','prgm_dec',"action",'other','Freebox_Tv');
-				$this->AddCommande('Home','home',"action",'other','Freebox_Tv');
-				$this->AddCommande('Mute','mute',"action",'other','Freebox_Tv');
-				$this->AddCommande('Enregister','rec',"action",'other','Freebox_Tv');
-				$this->AddCommande('1','1',"action",'other','Freebox_Tv');
-				$this->AddCommande('2','2',"action",'other','Freebox_Tv');
-				$this->AddCommande('3','3',"action",'other','Freebox_Tv');
-				$this->AddCommande('4','4',"action",'other','Freebox_Tv');
-				$this->AddCommande('5','5',"action",'other','Freebox_Tv');
-				$this->AddCommande('6','6',"action",'other','Freebox_Tv');
-				$this->AddCommande('7','7',"action",'other','Freebox_Tv');
-				$this->AddCommande('8','8',"action",'other','Freebox_Tv');
-				$this->AddCommande('9','9',"action",'other','Freebox_Tv');
-				$this->AddCommande('0','0',"action",'other','Freebox_Tv');
-				$this->AddCommande('Precedent','prev',"action",'other','Freebox_Tv');
-				$this->AddCommande('Lecture','play',"action",'other','Freebox_Tv');
-				$this->AddCommande('Suivant','next',"action",'other','Freebox_Tv');
-				$this->AddCommande('Rouge','red',"action",'other','Freebox_Tv');
-				$this->AddCommande('Vert','green',"action",'other','Freebox_Tv');
-				$this->AddCommande('Bleu','blue',"action",'other','Freebox_Tv');
-				$this->AddCommande('Jaune','yellow',"action",'other','Freebox_Tv');
-				$this->AddCommande('Ok','ok',"action",'other','Freebox_Tv');
-				$this->AddCommande('Haut','up',"action",'other','Freebox_Tv');
-				$this->AddCommande('Bas','down',"action",'other','Freebox_Tv');
-				$this->AddCommande('Gauche','left',"action",'other','Freebox_Tv');
-				$this->AddCommande('Droite','right',"action",'other','Freebox_Tv');
-			break;
 			case 'AirPlay':
 				$FreeboxAPI = new FreeboxAPI();
 				if($FreeboxAPI->open_session()===false)
@@ -264,8 +229,6 @@ class Freebox_OS extends eqLogic {
 				$FreeboxAPI->close_session();
 			break;
 		}
-		if($this->getLogicalId()=='')
-			$this->setLogicalId('FreeboxTv');
 	}
 	public static function RefreshInformation() {
 		$FreeboxAPI = new FreeboxAPI();
@@ -490,19 +453,6 @@ class Freebox_OS extends eqLogic {
 								}
 							//}
 						break;
-						case'FreeboxTv':
-							foreach($Equipement->getCmd('info') as $Commande){
-								if(is_object($Commande)){
-									switch($Commande->getLogicalId()){
-										case 'powerstat':
-											$result=exec('nc -zv '.$Equipement->getConfiguration('FREEBOX_TV_IP').' 7000 2>&1 | grep -E "open|succeeded" | wc -l');
-											$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
-											log::add('Freebox_OS','debug','Etat du player freebox '.$Equipement->getConfiguration('FREEBOX_TV_IP').' '.$result);
-										break;
-									}
-								}
-							}
-						break;
 						default:
 							$result=$FreeboxAPI->getTile($Equipement->getLogicalId());
 							if($result!=false){
@@ -546,76 +496,11 @@ class Freebox_OSCmd extends cmd {
 		$FreeboxAPI= new FreeboxAPI();
 		switch ($this->getEqLogic()->getLogicalId()){
 			case 'ADSL':
-				/*$result = $FreeboxAPI->adslStats();
-				if($result!=false){
-					switch ($this->getLogicalId()) 
-					{
-						case "rate_down":
-							$return= $result['rate_down'];
-							break;
-						case "rate_up":
-							$return= $result['rate_up'];
-							break;
-						case "bandwidth_up":
-							$return= $result['bandwidth_up'];
-							break;
-						case "bandwidth_down":
-							$return= $result['bandwidth_down'];
-							break;
-						case "media":
-							$return= $result['media'];
-							break;
-						case "state":
-							$return= $result['state'];
-							break;
-					}
-				}*/
 			break;
 			case 'Downloads':
 				$result = $FreeboxAPI->DownloadStats();
 				if($result!=false){
-					switch ($this->getLogicalId())
-					{
-					/*	case "nb_tasks":
-							$return= $result['nb_tasks'];
-							break;
-						case "nb_tasks_downloading":
-                                                        $return= $result['nb_tasks_downloading'];
-                                                        break;
-						case "nb_tasks_done":
-                                                        $return= $result['nb_tasks_done'];
-                                                        break;
-						case "rx_rate":
-                                                        $return= $result['rx_rate'];
-                                                        if(function_exists('bcdiv'))
-                                                		$return= bcdiv($return,1048576,2);
-                                                        break;
-						case "tx_rate":
-                                                        $return= $result['tx_rate'];
-                                                        if(function_exists('bcdiv'))
-                                                		$return= bcdiv($return,1048576,2);
-							break;
-                                                case "nb_tasks_active":
-                                                        $return= $result['nb_tasks_active'];
-                                                        break;
-                                                case "nb_tasks_stopped":
-                                                        $return= $result['nb_tasks_stopped'];
-                                                        break;
-                                                case "nb_tasks_queued":
-                                                        $return= $result['nb_tasks_queued'];
-                                                        break;
-                                                case "nb_tasks_repairing":
-                                                        $return= $result['nb_tasks_repairing'];
-                                                        break;
-                                                case "nb_tasks_extracting":
-                                                        $return= $result['nb_tasks_extracting'];
-                                                        break;
-                                                case "nb_tasks_error":
-                                                        $return= $result['nb_tasks_error'];
-                                                        break;    
-                                                case "nb_tasks_checking":
-                                                        $return= $result['nb_tasks_checking'];
-                                                        break;    */
+					switch ($this->getLogicalId()){
                                                 case "stop_dl":
                                                         $FreeboxAPI->Downloads(0);
 	                                                break;  
@@ -630,8 +515,7 @@ class Freebox_OSCmd extends cmd {
 					$result = $FreeboxAPI->wifi();
 				else
 					$result = $FreeboxAPI->system();
-					switch ($this->getLogicalId()) 
-					{
+					switch ($this->getLogicalId()) {
 						case "reboot":
 							$FreeboxAPI->reboot();
 							break;
@@ -666,27 +550,6 @@ class Freebox_OSCmd extends cmd {
 							$FreeboxAPI->ringtone_off();
 							break;
 					}
-				}
-			break;
-			case'FreeboxTv':
-				switch($this->getLogicalId()){
-					case 'power':
-						if($this->getEqLogic()->getConfiguration('mini4k')) {
-							$result=exec('sudo '.dirname(__FILE__) .'/../../ressources/mini4k_cmd '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$this->getLogicalId());
-							log::add('Freebox_OS','debug', 'Mini 4K : sudo '.dirname(__FILE__) .'/../../ressources/mini4k_cmd '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$this->getLogicalId());
-						}
-						else
-							$result=$FreeboxAPI->send_cmd_fbxtv($this->getLogicalId());
-						 $this->getEqLogic()->getCmd('info','powerstat')->execute();
-					break;
-					default:
-						if($this->getEqLogic()->getConfiguration('mini4k')) {
-							$result=exec('sudo '.dirname(__FILE__) .'/../../ressources/mini4k_cmd '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$this->getLogicalId());
-							log::add('Freebox_OS','debug', 'Mini 4K : sudo '.dirname(__FILE__) .'/../../ressources/mini4k_cmd '.$this->getEqLogic()->getConfiguration('FREEBOX_TV_IP').' '.$this->getLogicalId());
-						}
-						else
-							$result=$FreeboxAPI->send_cmd_fbxtv($this->getLogicalId());
-					break;
 				}
 			break;
 			case'AirPlay':

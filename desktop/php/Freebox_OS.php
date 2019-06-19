@@ -6,16 +6,10 @@
 	sendVarToJS('eqType', $plugin->getId());
 	$eqLogics = eqLogic::byType($plugin->getId());
 ?>
-
 <div class="row row-overflow">    
    	<div class="col-xs-12 eqLogicThumbnailDisplay">
   		<legend><i class="fas fa-cog"></i>  {{Gestion}}</legend>
 		<div class="eqLogicThumbnailContainer">
-			<div class="cursor eqLogicAction logoPrimary" data-action="add">
-				<i class="fas fa-plus-circle"></i>
-				<br>
-				<span>{{Ajouter}}</span>
-			</div>
 			<div class="cursor eqLogicAction logoPrimary" data-action="tile">
 				<i class="fas fa-search"></i>
 				<br>
@@ -32,7 +26,7 @@
     				<span>{{Parametre Freebox}}</span>
   			</div>
   		</div>
-  		<legend><i class="fas fa-table"></i> {{Mes templates}}</legend>
+  		<legend><i class="fas fa-table"></i> {{Mes equipements}}</legend>
 	   	<input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
 		<div class="eqLogicThumbnailContainer">
     		<?php
@@ -51,14 +45,10 @@
 	<div class="col-xs-12 eqLogic" style="display: none;">
 		<div class="input-group pull-right" style="display:inline-flex">
 			<span class="input-group-btn">
-				<!--a class="btn btn-default btn-sm eqLogicAction roundedLeft" data-action="configure">
+				<a class="btn btn-default btn-sm eqLogicAction roundedLeft" data-action="configure">
 					<i class="fa fa-cogs"></i>
 					 {{Configuration avancée}}
 				</a>
-				<a class="btn btn-default btn-sm eqLogicAction" data-action="copy">
-					<i class="fas fa-copy"></i>
-					 {{Dupliquer}}
-				</a-->
 				<a class="btn btn-sm btn-success eqLogicAction" data-action="save">
 					<i class="fas fa-check-circle"></i>
 					 {{Sauvegarder}}
@@ -144,25 +134,6 @@
 								<a class="btn btn-primary eqLogicAction"><i class="fa fa-search"></i> {{Recherche}}</a>
 							</div>
 						</div>
-						<div class="form-group TvParameter">
-							<label class="col-sm-3 control-label" >{{Adresse IP de la Freebox player}}</label>
-							<div class="col-sm-9">
-								<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="FREEBOX_TV_IP" placeholder="{{Adresse IP de la Freebox player}}"/>
-							</div>
-						</div>
-						<div class="form-group TvParameter">
-							<label class="col-sm-3 control-label" >{{Code de la télécommande}}</label>
-							<div class="col-sm-9">
-								<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="FREEBOX_TV_CODE" placeholder="{{Code de la télécommande}}"/>
-							</div>
-						</div>	
-						<div class="form-group TvParameter">
-							<label class="col-sm-3 control-label" >Mini 4k</label>
-							<div class="col-sm-9">
-								<label>{{Activer}}</label>
-								<input type="checkbox" class="eqLogicAttr " data-label-text="{{Activer}}" data-l1key="configuration" data-l2key="mini4k"/>
-							</div>
-						</div>	
 					</fieldset>
 				</form>
 			</div>

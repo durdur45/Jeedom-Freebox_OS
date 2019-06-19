@@ -460,17 +460,6 @@ class FreeboxAPI{
 		else
 			return false;
 	}
-	public function send_cmd_fbxtv($key){
-		try {
-			$serveur=trim($this->getConfiguration('FREEBOX_TV_IP'));
-			$tv_code=trim($this->getConfiguration('FREEBOX_TV_CODE'));
-			$http = new com_http($serveur.'/pub/remote_control?code='.$tv_code.'&key='.$key);
-			$result=$http->exec(2,2);
-			return $result;
-		} catch (Exception $e) {
-		    log::add('Freebox_OS','error', $e->getCode());
-		}
-	}
 	public function airmediaConfig($parametre) {
 		$return=self::fetch('/api/v3/airmedia/config/',$parametre,"PUT");   	         	
 		if($return['success'])
