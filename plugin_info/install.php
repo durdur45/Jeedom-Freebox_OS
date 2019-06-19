@@ -4,10 +4,12 @@ function Freebox_OS_install() {
 	Freebox_OS::CreateArchi();
 }
 function Freebox_OS_update() {
-	Freebox_OS::CreateArchi();
+	log::add('Freebox_OS','debug','Lancement du script de mise à jour'); 
 	foreach(eqLogic::byLogicalId('FreeboxPlayer','Freebox_OS',true) as $eqLogic){
 		$eqLogic->remove();
 	}
+	Freebox_OS::CreateArchi();
+	log::add('Freebox_OS','debug','Fin du script de mise à jour');
 }
 function Freebox_OS_remove() {
 }
