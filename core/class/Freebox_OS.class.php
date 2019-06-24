@@ -583,6 +583,7 @@ class Freebox_OSCmd extends cmd {
 				}
 				$FreeboxAPI->setTile($this->getEqLogic()->getLogicalId(),$this->getLogicalId(),$parametre);
 			break;
-		}		
+		}	
+		$FreeboxAPI->close_session();	
 	}
 }
