@@ -5,40 +5,52 @@ $('.MaFreebox').on('click', function() {
 		height: 700,
 		width: 850});
 	$('#md_modal').load('index.php?v=d&modal=MaFreebox&plugin=Freebox_OS&type=Freebox_OS').dialog('open');
+}); 
+$('.eqLogicAction[data-action=tile]').on('click', function() {
+	$.ajax({
+		type: 'POST',            
+		async: false,
+		url: 'plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php',
+		data:{
+			action: 'SearchTile'
+		},
+		dataType: 'json',
+		global: false,
+		error: function(request, status, error) {},
+		success: function(data) {
+			location.reload();
+		}
+	});
 });
 $('.Equipement').on('click', function() {
 	$.ajax({
 		type: 'POST',            
 		async: false,
 		url: 'plugins/Freebox_OS/core/ajax/Freebox_OS.ajax.php',
-		data:
-			{
+		data:{
 			action: 'Search'+$('.eqLogicAttr[data-l1key=logicalId]').val()
-			},
+		},
 		dataType: 'json',
 		global: false,
 		error: function(request, status, error) {},
 		success: function(data) {
-			}
-		});
+			location.reload();
+		}
+	});
 });
 function addCmdToTable(_cmd) {
 	switch($('.eqLogicAttr[data-l1key=logicalId]').val()){
+		case 'Home Adapters':
+			$('.Equipement').show();
+		break;
 		case 'Reseau':
 			$('.Equipement').show();
-			$('.TvParameter').hide();
 		break;
 		case 'Disque':
 			$('.Equipement').show();
-			$('.TvParameter').hide();
-		break;
-		case 'FreeboxTv':
-			$('.Equipement').hide();
-			$('.TvParameter').show();
 		break;
 		default:
 			$('.Equipement').hide();
-			$('.TvParameter').hide();
 		break;
 	}
 	if (!isset(_cmd)) {
@@ -52,18 +64,15 @@ function addCmdToTable(_cmd) {
 		.append($('<div>')
 			.append($('<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove">')))
 		.append($('<div>')
-			.append($('<i class="fa fa-arrows-v pull-left cursor bt_sortable" style="margin-top: 9px;">'))));
+			.append($('<i class="fa fa-arrows-v pull-left cursor bt_sortable">'))));
 	tr.append($('<td>')
 		.append($('<div>')
 			.append($('<input class="cmdAttr form-control input-sm" data-l1key="id" style="display : none;">'))
 			.append($('<input class="cmdAttr form-control input-sm" data-l1key="name" value="' + init(_cmd.name) + '" placeholder="{{Name}}" title="Name">'))));
 	tr.append($('<td>')
-			.append($('<input type="hidden" class="cmdAttr" data-l1key="template" data-l2key="dashboard" />'))
-			.append($('<input type="hidden" class="cmdAttr" data-l1key="template" data-l2key="mobile" />'))
-			.append($('<input type="hidden" class="cmdAttr" data-l1key="configuration" data-l2key="host_type" />'))
 			.append($('<input type="hidden" class="cmdAttr" data-l1key="type" />'))
 			.append($('<input type="hidden" class="cmdAttr" data-l1key="subType" />'))	
-		.append($('<div style="width : 40%;display : inline-block;">')
+		.append($('<div>')
 			.append($('<span>')
 				.append('{{Historiser}}')
 				.append($('<input type="checkbox" class="cmdAttr" data-size="mini" data-label-text="{{Historiser}}" data-l1key="isHistorized" checked/>')))
@@ -71,7 +80,7 @@ function addCmdToTable(_cmd) {
 			.append($('<span>')
 				.append('{{Afficher}}')
 				.append($('<input type="checkbox" class="cmdAttr" data-size="mini" data-label-text="{{Afficher}}" data-l1key="isVisible" checked/>'))))
-			.append($('<div style="width : 40%;display : inline-block;">')	
+			.append($('<div>')	
 				.append($('<input class="cmdAttr form-control input-sm" data-l1key="unite" placeholder="{{Unité}}" title="Unité"/>'))));  
 		var parmetre=$('<td>');
 	if (is_numeric(_cmd.id)) {
