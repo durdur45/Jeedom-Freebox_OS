@@ -372,11 +372,11 @@ class Freebox_OS extends eqLogic {
 								}
 							}
 						break;
-						case 'Disque':		
-							$result = $FreeboxAPI->disques($Commande->getLogicalId());
-							if($result!=false){								
-								foreach($Equipement->getCmd('info') as $Commande){
-									if(is_object($Commande))
+						case 'Disque':						
+							foreach($Equipement->getCmd('info') as $Commande){
+								if(is_object($Commande)){
+									$result = $FreeboxAPI->disques($Commande->getLogicalId());
+									if($result!=false)				
 										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result);
 								}
 							}
@@ -410,11 +410,11 @@ class Freebox_OS extends eqLogic {
 								}
 							}
 						break;
-						case'Reseau':
-							$result=$FreeboxAPI->ReseauPing($Commande->getLogicalId());
-							if($result!=false){								
-								foreach($Equipement->getCmd('info') as $Commande){
-									if(is_object($Commande)){
+						case'Reseau':			
+							foreach($Equipement->getCmd('info') as $Commande){
+								if(is_object($Commande)){
+									$result=$FreeboxAPI->ReseauPing($Commande->getLogicalId());
+									if($result!=false){					
 										if (isset($result['l3connectivities']))	{
 											foreach($result['l3connectivities'] as $Ip){
 												if ($Ip['active']){
