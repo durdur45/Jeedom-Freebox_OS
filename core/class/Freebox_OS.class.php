@@ -445,19 +445,21 @@ class Freebox_OS extends eqLogic {
 							}
 						break;
 						case'HomeAdapters':
-							$result=$FreeboxAPI->getHomeAdapterStatus($Equipement->getLogicalId());
-							//if($result!=false){
-								foreach($Equipement->getCmd('info') as $Commande){
+							foreach($Equipement->getCmd('info') as $Commande){
+								if($result!=false){
+									$result=$FreeboxAPI->getHomeAdapterStatus($Commande->getLogicalId());
 									if(is_object($Commande))
 										$Equipement->checkAndUpdateCmd($Commande->getLogicalId(),$result['status']);
 								}
-							//}
+							}
 						break;
 						default:
 							$result=$FreeboxAPI->getTile($Equipement->getLogicalId());
 							if($result!=false){
-								foreach($result['data'] as $Commande){
-									$Equipement->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
+								foreach($result as $data){
+									foreach($data['data'] as $Commande){
+										$Equipement->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
+									}
 								}
 							}
 						break;
