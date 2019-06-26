@@ -581,6 +581,9 @@ class Freebox_OSCmd extends cmd {
 					case 'select':
 						$parametre['value'] = $_options['select'];
 					break;
+					default:
+						$parametre['value'] = true;
+					break;
 				}
 				$FreeboxAPI->setTile($this->getEqLogic()->getLogicalId(),$this->getLogicalId(),$parametre);
 			break;
