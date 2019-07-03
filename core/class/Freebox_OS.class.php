@@ -202,20 +202,24 @@ class Freebox_OS extends eqLogic {
 					$EquipementsHtml.=template_replace($replaceCmd, $cmd->toHtml($_version));
 				}
 				$replace['#Equipements#'] = $EquipementsHtml;
-			break;
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, $this->getLogicalId(), 'Freebox_OS')));
 			case 'Disque':		
 				foreach ($this->getCmd(null, null, true) as $cmd) 
 					 $replace['#cmd#'] .= $cmd->toHtml($_version);
-			default:
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, $this->getLogicalId(), 'Freebox_OS')));
+			case 'ADSL':
+			case 'AirPlay':
+			case 'Downloads':
+			case 'Phone':
+			case 'System':
 				foreach ($this->getCmd(null, null, true) as $cmd) {
 					if($cmd->getIsVisible())	
 						$masque[]=$cmd->getLogicalId();
 					$replace['#'.$cmd->getLogicalId().'#'] = $cmd->toHtml($_version);
 				}
 				$replace['#masque#']=json_encode($masque);
-			break;
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, $this->getLogicalId(), 'Freebox_OS')));
 		}
-		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, $this->getLogicalId(), 'Freebox_OS')));
 	}
 	public function preSave() {	
 		switch($this->getLogicalId())	{
