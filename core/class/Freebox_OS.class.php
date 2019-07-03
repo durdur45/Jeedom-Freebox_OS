@@ -73,7 +73,7 @@ class Freebox_OS extends eqLogic {
 		$EqLogic->save();
 		return $EqLogic;
 	}
-	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary', $Template='', $unite='') {
+	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary', $Template='default', $unite='') {
 		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
 		{
@@ -92,10 +92,10 @@ class Freebox_OS extends eqLogic {
 			$Commande->setUnite($unite);
 			$Commande->setType($Type);
 			$Commande->setSubType($SubType);
-			$Commande->setTemplate('dashboard',$Template);
-			$Commande->setTemplate('mobile', $Template);
-			$Commande->save();
 		}
+		$Commande->setTemplate('dashboard',$Template);
+		$Commande->setTemplate('mobile', $Template);
+		$Commande->save();
 		return $Commande;
 	}
 	public static function CreateArchi() {
@@ -219,6 +219,26 @@ class Freebox_OS extends eqLogic {
 				}
 				$replace['#masque#']=json_encode($masque);
 				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, $this->getLogicalId(), 'Freebox_OS')));
+			default:
+				$replace['#eqLogic_class#'] = 'eqLogic_layout_default';
+				$cmd_html = '';
+				$br_before = 0;
+				foreach ($this->getCmd(null, null, true) as $cmd) {
+					if (isset($replace['#refresh_id#']) && $cmd->getId() == $replace['#refresh_id#']) {
+						continue;
+					}
+					if ($br_before == 0 && $cmd->getDisplay('forceReturnLineBefore', 0) == 1) {
+						$cmd_html .= '<br/>';
+					}
+					$cmd_html .= $cmd->toHtml($_version, '');
+					$br_before = 0;
+					if ($cmd->getDisplay('forceReturnLineAfter', 0) == 1) {
+						$cmd_html .= '<br/>';
+						$br_before = 1;
+					}
+				}
+				$replace['#cmd#'] = $cmd_html;
+				return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $_version, 'eqLogic')));
 		}
 	}
 	public function preSave() {	
