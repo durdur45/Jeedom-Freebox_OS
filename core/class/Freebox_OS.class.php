@@ -213,6 +213,7 @@ class Freebox_OS extends eqLogic {
 			case 'Phone':
 			case 'System':
 				foreach ($this->getCmd(null, null, true) as $cmd) {
+					$replace['#'.$cmd->getLogicalId().'#'] = '';
 					if($cmd->getIsVisible())	
 						$masque[]=$cmd->getLogicalId();
 					$replace['#'.$cmd->getLogicalId().'#'] = $cmd->toHtml($_version);
