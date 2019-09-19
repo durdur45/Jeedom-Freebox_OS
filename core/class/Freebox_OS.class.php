@@ -92,10 +92,10 @@ class Freebox_OS extends eqLogic {
 			$Commande->setUnite($unite);
 			$Commande->setType($Type);
 			$Commande->setSubType($SubType);
+			$Commande->setTemplate('dashboard',$Template);
+			$Commande->setTemplate('mobile', $Template);
+			$Commande->save();
 		}
-		$Commande->setTemplate('dashboard',$Template);
-		$Commande->setTemplate('mobile', $Template);
-		$Commande->save();
 		return $Commande;
 	}
 	public static function CreateArchi() {
