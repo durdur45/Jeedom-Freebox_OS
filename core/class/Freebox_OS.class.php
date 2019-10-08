@@ -595,7 +595,7 @@ class Freebox_OSCmd extends cmd {
 			default:
 				switch ($this->getSubType()) {
 					case 'slider':    
-						$parametre['value'] = $_options['slider'];
+						$parametre['value'] = (int)$_options['slider'];
 					break;
 					case 'color':
 						$parametre['value'] = $_options['color'];
