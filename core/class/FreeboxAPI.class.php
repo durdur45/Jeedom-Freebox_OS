@@ -287,33 +287,33 @@ class FreeboxAPI{
                               			case "int":
 							foreach(str_split($Commande['ui']['access']) as $access){
 								if($access == "r"){
-									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"info",'numeric');
+									$Tile->AddCommande('info_'. $Commande['label'],$Commande['ep_id'],"info",'numeric');
 									$Tile->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
 								}
 								if($access == "w"){
-									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action",'slider');
+									$Tile->AddCommande('action_'. $Commande['label'],$Commande['ep_id'],"action",'slider');
 								}
 							}
                               			break;
                               			case "bool":
 							foreach(str_split($Commande['ui']['access']) as $access){
 								if($access == "r"){
-									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"info",'binary');
+									$Tile->AddCommande('info_'. $Commande['label'],$Commande['ep_id'],"info",'binary');
 									$Tile->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
 								}
 								if($access == "w"){
-									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action",'other');
+									$Tile->AddCommande('action_'. $Commande['label'],$Commande['ep_id'],"action",'other');
 								}
 							}
 					      break;
 					      case "string":
 							foreach(str_split($Commande['ui']['access']) as $access){
 								if($access == "r"){
-									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"info","string");
+									$Tile->AddCommande('info_'. $Commande['label'],$Commande['ep_id'],"info","string");
 									$Tile->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
 								}
 								if($access == "w"){
-									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action","message");
+									$Tile->AddCommande('action_'. $Commande['label'],$Commande['ep_id'],"action","message");
 								}
 							}
                              			 break;
