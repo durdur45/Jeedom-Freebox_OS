@@ -286,33 +286,33 @@ class FreeboxAPI{
                               			break;
                               			case "int":
 							foreach(str_split($Commande['ui']['access']) as $access){
-								if($access = "r"){
+								if($access == "r"){
 									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"info",'numeric');
 									$Tile->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
 								}
-								if($access = "w"){
+								if($access == "w"){
 									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action",'slider');
 								}
 							}
                               			break;
                               			case "bool":
 							foreach(str_split($Commande['ui']['access']) as $access){
-								if($access = "r"){
+								if($access == "r"){
 									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"info",'binary');
 									$Tile->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
 								}
-								if($access = "w"){
+								if($access == "w"){
 									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action",'other');
 								}
 							}
 					      break;
 					      case "string":
 							foreach(str_split($Commande['ui']['access']) as $access){
-								if($access = "r"){
+								if($access == "r"){
 									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"info","string");
 									$Tile->checkAndUpdateCmd($Commande['ep_id'],$Commande['value']);
 								}
-								if($access = "w"){
+								if($access == "w"){
 									$Tile->AddCommande($Commande['label'],$Commande['ep_id'],"action","message");
 								}
 							}
